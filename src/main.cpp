@@ -14,16 +14,17 @@ int main() {
     InitWindow(windowWidth, windowHeight, "Resize Window");
     SetWindowMinSize(320, 240);
 
-    // SetTargetFPS(60);
+    SetTargetFPS(60);
 
     RenderTexture2D target = LoadRenderTexture(windowWidth, windowHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     // Load textures
     Texture2D sheet = LoadTexture("../sheet.png");
-    Texture2D mapText = LoadTexture("../large office.png");
-    Object player({16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15});
-    Object map({0,0,448,320}, {0,0,448,320}, {0,0,0,0});
+    Vector2 playerOffset;
+    playerOffset.x = 4;
+    playerOffset.y = 1;
+    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, playerOffset);
 
     Camera2D camera;
     camera.rotation = 0.0f;
@@ -68,8 +69,8 @@ int main() {
             DrawText("Skibidi", 25,25,5, WHITE);
         }
 
-        DrawRectanglePro(player.getHitbox(), (Vector2){0, 0}, 0, YELLOW);
-        DrawTexturePro(sheet, player.getTextureArea(), player.getRectangle(), (Vector2){0, 0}, 0, WHITE);
+        player.draw();
+
         EndMode2D();
 
         // Debug
