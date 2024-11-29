@@ -17,6 +17,7 @@ int main() {
 
     Texture2D sheet = LoadTexture("../sheet.png");
     Rectangle player = {100, 100, 64, 64};
+    Rectangle playerHitbox = {player.x, player.y, 32, 60};
 
     SetTargetFPS(60);
 
@@ -55,10 +56,11 @@ int main() {
         BeginMode2D(camera);
 
         DrawCircle(400, 300, 50, RED);
-        if(CheckCollisionCircleRec((Vector2){400,300}, 50, player)) {
+        if(CheckCollisionCircleRec((Vector2){400,300}, 50, playerHitbox)) {
             DrawText("Skibidi", 100,100,20,WHITE);
         }
         DrawCircle(600, 500, 100, BLUE);
+        DrawRectanglePro(playerHitbox, (Vector2){player.x+16, player.y+16}, 0, YELLOW);
         DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, player, (Vector2){0, 0}, 0.0f, WHITE);
         EndMode2D();
 
