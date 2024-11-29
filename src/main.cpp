@@ -1,3 +1,5 @@
+#include <string>
+
 #include "raylib.h"
 
 int main() {
@@ -5,18 +7,16 @@ int main() {
     const int windowHeight = 720;
 
     const float movementSpeed = 75.0f;
+    bool debug = false;
 
     // Enable config flags for resizable window and vertical synchro
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
     InitWindow(windowWidth, windowHeight, "Resize Window");
     SetWindowMinSize(320, 240);
 
-    int gameScreenWidth = 1080;
-    int gameScreenHeight = 720;
-
     SetTargetFPS(60);
 
-    RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
+    RenderTexture2D target = LoadRenderTexture(windowWidth, windowHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     // Load textures
@@ -29,7 +29,7 @@ int main() {
     camera.zoom = 4.0f;
 
     while (!WindowShouldClose()) {
-        float deltaTime = GetFrameTime();
+        const float deltaTime = GetFrameTime();
 
         // Update
         if (IsKeyDown(KEY_D)) {
@@ -43,6 +43,9 @@ int main() {
         }
         if (IsKeyDown(KEY_W)) {
             player.y -= movementSpeed * deltaTime;
+        }
+        if (IsKeyPressed(KEY_F3)) {
+            debug = !debug;
         }
 
         playerHitbox.x = player.x + 4;
@@ -62,13 +65,19 @@ int main() {
 
         DrawCircle(100, 75, 12.5, RED);
         if(CheckCollisionCircleRec((Vector2){100,75}, 12.5, playerHitbox)) {
-            DrawText("Skibidi", 25,25,5,WHITE);
+            DrawText("Skibidi", 25,25,5, WHITE);
         }
 
         DrawRectanglePro(playerHitbox, (Vector2){0, 0}, 0, YELLOW);
         DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, player, (Vector2){0, 0}, 0, WHITE);
 
         EndMode2D();
+
+        // Debug
+        if (debug) {
+            DrawFPS(0, 0);
+            DrawText(("Position: " + std::to_string(player.x) + "," + std::to_string(player.y)).c_str(), 0, 16, 20, WHITE);
+        }
         EndDrawing();
     }
 
