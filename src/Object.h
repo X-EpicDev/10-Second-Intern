@@ -5,14 +5,20 @@
 
 class Object {
 private:
+    Texture2D& sheet;
     Rectangle textureArea;
     Rectangle object;
     Rectangle hitbox;
     Vector2 hitboxOffset;
 public:
-    Object(const Rectangle textureArea, const Rectangle object, const Rectangle hitbox, const Vector2 hitboxOffset) : textureArea(textureArea), object(object), hitbox(hitbox), hitboxOffset(hitboxOffset) {
+    Object(Texture2D& sheet, const Rectangle textureArea, const Rectangle object, const Rectangle hitbox, const Vector2 hitboxOffset) : sheet(sheet), textureArea(textureArea), object(object), hitbox(hitbox), hitboxOffset(hitboxOffset) {
         this->hitbox.x = getX() + this->hitboxOffset.x;
         this->hitbox.y = getY() + this->hitboxOffset.y;
+    }
+
+    void draw() {
+        DrawRectanglePro(this->hitbox, (Vector2){0, 0}, 0, YELLOW);
+        DrawTexturePro(sheet, this->textureArea, this->object, (Vector2){0, 0}, 0, WHITE);
     }
 
     Rectangle getTextureArea() {

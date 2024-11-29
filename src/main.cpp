@@ -24,7 +24,7 @@ int main() {
     Vector2 playerOffset;
     playerOffset.x = 4;
     playerOffset.y = 1;
-    Object player({16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, playerOffset);
+    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, playerOffset);
 
     Camera2D camera;
     camera.rotation = 0.0f;
