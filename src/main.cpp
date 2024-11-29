@@ -67,8 +67,7 @@ int main() {
             DrawText("Skibidi", 25,25,5, WHITE);
         }
 
-        DrawRectanglePro(player.getHitbox(), (Vector2){0, 0}, 0, YELLOW);
-        DrawTexturePro(sheet, player.getTextureArea(), player.getRectangle(), (Vector2){0, 0}, 0, WHITE);
+        player.draw();
 
         EndMode2D();
 
@@ -79,7 +78,6 @@ int main() {
         }
         EndDrawing();
     }
-
 
     UnloadRenderTexture(target);
     CloseWindow();
