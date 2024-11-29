@@ -1,6 +1,3 @@
-#include <cstdio>
-#include <iostream>
-
 #include "raylib.h"
 #include "raymath.h"        // Required for: Vector2Clamp()
 
@@ -46,7 +43,6 @@ int main(void)
             playerDestRect.x += 10;
         } else if (IsKeyDown('A')) {
             playerDestRect.x -= 10;
-            std::cout << playerDestRect.x << std::endl;
         }
 
         // Update virtual mouse (clamped mouse value behind game screen)
