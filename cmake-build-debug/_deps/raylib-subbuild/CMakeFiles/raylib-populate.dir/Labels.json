@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/CMakeFiles/raylib-populate-complete.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-build.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-configure.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-download.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-install.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-mkdir.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-patch.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-test.rule"
+		},
+		{
+			"file" : "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild/raylib-populate-prefix/src/raylib-populate-stamp/raylib-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"raylib-populate"
+		],
+		"name" : "raylib-populate"
+	}
+}
