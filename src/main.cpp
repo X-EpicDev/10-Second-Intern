@@ -4,6 +4,8 @@ int main() {
     const int windowWidth = 1080;
     const int windowHeight = 720;
 
+    const float movementSpeed = 75.0f;
+
     // Enable config flags for resizable window and vertical synchro
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
     InitWindow(windowWidth, windowHeight, "Resize Window");
@@ -19,18 +21,17 @@ int main() {
 
     // Load textures
     Texture2D sheet = LoadTexture("../sheet.png");
-    Rectangle player = {100, 100, 64, 64};
-    Rectangle playerHitbox = {0, 0, 32, 60};
+    Rectangle player = {25, 25, 16, 16};
+    Rectangle playerHitbox = {0, 0, 8, 15};
 
     Camera2D camera;
     camera.rotation = 0.0f;
-    camera.zoom = 1.0f;
+    camera.zoom = 4.0f;
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
         // Update
-        float movementSpeed = 200.0f;
         if (IsKeyDown(KEY_D)) {
             player.x += movementSpeed * deltaTime;
         }
@@ -44,8 +45,8 @@ int main() {
             player.y -= movementSpeed * deltaTime;
         }
 
-        playerHitbox.x = player.x + 16;
-        playerHitbox.y = player.y + 4;
+        playerHitbox.x = player.x + 4;
+        playerHitbox.y = player.y + 1;
 
         camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
         camera.target = (Vector2){player.x + player.width / 2, player.y + player.height / 2};
@@ -59,9 +60,9 @@ int main() {
 
         BeginMode2D(camera);
 
-        DrawCircle(400, 300, 50, RED);
-        if(CheckCollisionCircleRec((Vector2){400,300}, 50, playerHitbox)) {
-            DrawText("Skibidi", 100,100,20,WHITE);
+        DrawCircle(100, 75, 12.5, RED);
+        if(CheckCollisionCircleRec((Vector2){100,75}, 12.5, playerHitbox)) {
+            DrawText("Skibidi", 25,25,5,WHITE);
         }
 
         DrawRectanglePro(playerHitbox, (Vector2){0, 0}, 0, YELLOW);
