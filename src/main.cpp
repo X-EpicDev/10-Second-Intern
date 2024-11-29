@@ -21,7 +21,9 @@ int main() {
 
     // Load textures
     Texture2D sheet = LoadTexture("../sheet.png");
+    Texture2D mapText = LoadTexture("../large office.png");
     Object player({16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15});
+    Object map({0,0,448,320}, {0,0,448,320}, {0,0,0,0});
 
     Camera2D camera;
     camera.rotation = 0.0f;
@@ -59,6 +61,8 @@ int main() {
 
         BeginMode2D(camera);
 
+        DrawTexturePro(mapText, map.getTextureArea(), map.getRectangle(), (Vector2){0,0}, 0, WHITE);
+
         DrawCircle(100, 75, 12.5, RED);
         if(CheckCollisionCircleRec((Vector2){100,75}, 12.5, player.getHitbox())) {
             DrawText("Skibidi", 25,25,5, WHITE);
@@ -66,13 +70,13 @@ int main() {
 
         DrawRectanglePro(player.getHitbox(), (Vector2){0, 0}, 0, YELLOW);
         DrawTexturePro(sheet, player.getTextureArea(), player.getRectangle(), (Vector2){0, 0}, 0, WHITE);
-
         EndMode2D();
 
         // Debug
         if (debug) {
             DrawFPS(0, 0);
             DrawText(("Position: " + std::to_string(player.getX()) + "," + std::to_string(player.getY())).c_str(), 0, 16, 20, WHITE);
+            DrawText(("DeltaTime: " + std::to_string(deltaTime)).c_str(), 0, 32, 20, WHITE);
         }
         EndDrawing();
     }
