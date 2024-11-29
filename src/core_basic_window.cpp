@@ -1,10 +1,6 @@
 #include "raylib.h"
-#include "raymath.h"        // Required for: Vector2Clamp()
 
-#define MAX(a, b) ((a)>(b)? (a) : (b))
-#define MIN(a, b) ((a)<(b)? (a) : (b))
-
-int main(void) {
+int main() {
     const int windowWidth = 1080;
     const int windowHeight = 720;
 
@@ -20,35 +16,34 @@ int main(void) {
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     Texture2D sheet = LoadTexture("../sheet.png");
-    Rectangle playerDestRect = {100, 100, 64, 64};
+    Rectangle player = {100, 100, 64, 64};
 
     SetTargetFPS(60);
 
     Camera2D camera;
-    camera.target = (Vector2){playerDestRect.x + playerDestRect.width / 2, playerDestRect.y + playerDestRect.height / 2};
-    camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
     camera.rotation = 0.0f;
     camera.zoom = 1.0f;
 
     while (!WindowShouldClose()) {
         float deltaTime = GetFrameTime();
 
+        // Update
         float movementSpeed = 200.0f;
-        if (IsKeyDown('D')) {
-            playerDestRect.x += movementSpeed * deltaTime;
+        if (IsKeyDown(KEY_D)) {
+            player.x += movementSpeed * deltaTime;
         }
-        if (IsKeyDown('A')) {
-            playerDestRect.x -= movementSpeed * deltaTime;
+        if (IsKeyDown(KEY_A)) {
+            player.x -= movementSpeed * deltaTime;
         }
-        if (IsKeyDown('S')) {
-            playerDestRect.y += movementSpeed * deltaTime;
+        if (IsKeyDown(KEY_S)) {
+            player.y += movementSpeed * deltaTime;
         }
-        if (IsKeyDown('W')) {
-            playerDestRect.y -= movementSpeed * deltaTime;
+        if (IsKeyDown(KEY_W)) {
+            player.y -= movementSpeed * deltaTime;
         }
 
         camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
-        camera.target = (Vector2){playerDestRect.x + playerDestRect.width / 2, playerDestRect.y + playerDestRect.height / 2};
+        camera.target = (Vector2){player.x + player.width / 2, player.y + player.height / 2};
 
         Vector2 mouse = GetMousePosition();
         Vector2 worldMouse = GetScreenToWorld2D(mouse, camera);
@@ -60,12 +55,11 @@ int main(void) {
         BeginMode2D(camera);
 
         DrawCircle(400, 300, 50, RED);
-        if(CheckCollisionCircleRec((Vector2){400,300}, 50, playerDestRect))
-        {
+        if(CheckCollisionCircleRec((Vector2){400,300}, 50, player)) {
             DrawText("Skibidi", 100,100,20,WHITE);
         }
         DrawCircle(600, 500, 100, BLUE);
-        DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, playerDestRect, (Vector2){0, 0}, 0.0f, WHITE);
+        DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, player, (Vector2){0, 0}, 0.0f, WHITE);
         EndMode2D();
 
         EndDrawing();
