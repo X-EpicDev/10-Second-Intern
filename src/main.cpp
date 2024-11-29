@@ -12,14 +12,15 @@ int main() {
     int gameScreenWidth = 1080;
     int gameScreenHeight = 720;
 
+    SetTargetFPS(60);
+
     RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
+    // Load textures
     Texture2D sheet = LoadTexture("../sheet.png");
     Rectangle player = {100, 100, 64, 64};
     Rectangle playerHitbox = {0, 0, 32, 60};
-
-    SetTargetFPS(60);
 
     Camera2D camera;
     camera.rotation = 0.0f;
