@@ -1,17 +1,5 @@
-/*******************************************************************************************
-*
-*   raylib [core] example - window scale letterbox (and virtual mouse)
-*
-*   Example originally created with raylib 2.5, last time updated with raylib 4.0
-*
-*   Example contributed by Anata (@anatagawa) and reviewed by Ramon Santamaria (@raysan5)
-*
-*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
-*   BSD-like license that allows static linking with closed source software
-*
-*   Copyright (c) 2019-2024 Anata (@anatagawa) and Ramon Santamaria (@raysan5)
-*
-********************************************************************************************/
+#include <cstdio>
+#include <iostream>
 
 #include "raylib.h"
 #include "raymath.h"        // Required for: Vector2Clamp()
@@ -43,7 +31,6 @@ int main(void)
 
     Texture2D sheet =  LoadTexture("../sheet.png");
     Rectangle playerDestRect = { 100, 100, 64, 64 };
-    Vector2 origin = { 0, 0 };
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
 
@@ -55,6 +42,12 @@ int main(void)
         // Compute the size
         float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
 
+        if (IsKeyDown('D')) {
+            playerDestRect.x += 10;
+        } else if (IsKeyDown('A')) {
+            playerDestRect.x -= 10;
+            std::cout << playerDestRect.x << std::endl;
+        }
 
         // Update virtual mouse (clamped mouse value behind game screen)
         Vector2 mouse = GetMousePosition();
@@ -63,7 +56,6 @@ int main(void)
         virtualMouse.y = (mouse.y - (GetScreenHeight() - (gameScreenHeight*scale))*0.5f)/scale;
         virtualMouse = Vector2Clamp(virtualMouse, (Vector2){ 0, 0 }, (Vector2){ (float)gameScreenWidth, (float)gameScreenHeight });
 
-
         //drawing
         BeginDrawing();
         ClearBackground(BLACK);     // Clear screen background
@@ -71,7 +63,7 @@ int main(void)
         // Circle Drawing
         DrawCircle((GetScreenWidth() - ((float)100*scale))*0.5f, (GetScreenHeight() - ((float)100*scale))*0.5f, 100, RED);
         DrawCircle(GetScreenWidth()/2, GetScreenHeight()/2, 100, BLUE);
-        DrawTexturePro(sheet, { 16, 0, 16, 16 }, playerDestRect, origin, 0.0f, WHITE);
+        DrawTexturePro(sheet, { 16, 0, 16, 16 }, playerDestRect, { 0, 0 }, 0.0f, WHITE);
         EndDrawing();
         //--------------------------------------------------------------------------------------
     }
