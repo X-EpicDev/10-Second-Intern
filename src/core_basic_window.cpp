@@ -60,6 +60,10 @@ int main(void) {
         BeginMode2D(camera);
 
         DrawCircle(400, 300, 50, RED);
+        if(CheckCollisionCircleRec((Vector2){400,300}, 50, playerDestRect))
+        {
+            DrawText("Skibidi", 100,100,20,WHITE);
+        }
         DrawCircle(600, 500, 100, BLUE);
         DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, playerDestRect, (Vector2){0, 0}, 0.0f, WHITE);
         EndMode2D();
