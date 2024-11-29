@@ -5,11 +5,8 @@
 #define MIN(a, b) ((a)<(b)? (a) : (b))
 
 int main(void) {
-    //
     const int windowWidth = 1080;
     const int windowHeight = 720;
-    float playerX = GetScreenWidth() / 2;
-    float playerY = GetScreenHeight() / 2;
 
     // Enable config flags for resizable window and vertical synchro
     SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
@@ -23,7 +20,7 @@ int main(void) {
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     Texture2D sheet = LoadTexture("../sheet.png");
-
+    Rectangle playerDestRect = {100, 100, 64, 64};
 
     SetTargetFPS(60);
 
@@ -31,12 +28,10 @@ int main(void) {
         // Update
         float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
 
-
-        Rectangle playerDestRect = {playerX, playerY, 64, 64};
         if (IsKeyDown('D')) {
-            playerDestRect.x = playerX += 10;
+            playerDestRect.x += 100 * GetFrameTime();
         } else if (IsKeyDown('A')) {
-            playerDestRect.x = playerY += 10;
+            playerDestRect.x -= 100 * GetFrameTime();
         }
 
         // Update virtual mouse (clamped mouse value behind game screen)
