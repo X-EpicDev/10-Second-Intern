@@ -24,34 +24,49 @@ int main(void) {
 
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        // Update
-        float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
+    Camera2D camera;
+    camera.target = (Vector2){playerDestRect.x + playerDestRect.width / 2, playerDestRect.y + playerDestRect.height / 2};
+    camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
+    camera.rotation = 0.0f;
+    camera.zoom = 1.0f;
 
+    while (!WindowShouldClose()) {
+        float deltaTime = GetFrameTime();
+
+        float movementSpeed = 200.0f;
         if (IsKeyDown('D')) {
-            playerDestRect.x += 100 * GetFrameTime();
-        } else if (IsKeyDown('A')) {
-            playerDestRect.x -= 100 * GetFrameTime();
+            playerDestRect.x += movementSpeed * deltaTime;
+        }
+        if (IsKeyDown('A')) {
+            playerDestRect.x -= movementSpeed * deltaTime;
+        }
+        if (IsKeyDown('S')) {
+            playerDestRect.y += movementSpeed * deltaTime;
+        }
+        if (IsKeyDown('W')) {
+            playerDestRect.y -= movementSpeed * deltaTime;
         }
 
-        // Update virtual mouse (clamped mouse value behind game screen)
+        camera.target = (Vector2){playerDestRect.x + playerDestRect.width / 2, playerDestRect.y + playerDestRect.height / 2};
+
         Vector2 mouse = GetMousePosition();
-        Vector2 virtualMouse = {0};
-        virtualMouse.x = (mouse.x - (GetScreenWidth() - (gameScreenWidth * scale)) * 0.5f) / scale;
-        virtualMouse.y = (mouse.y - (GetScreenHeight() - (gameScreenHeight * scale)) * 0.5f) / scale;
-        virtualMouse = Vector2Clamp(virtualMouse, (Vector2){0, 0},
-                                    (Vector2){(float) gameScreenWidth, (float) gameScreenHeight});
+        Vector2 worldMouse = GetScreenToWorld2D(mouse, camera);
 
-        //drawing
+        // Drawing
         BeginDrawing();
-        ClearBackground(BLACK); // Clear screen background
+        ClearBackground(BLACK);
 
-        // Circle Drawing
-        DrawCircle((GetScreenWidth() - ((float) 100 * scale)) * 0.5f,(GetScreenHeight() - ((float) 100 * scale)) * 0.5f, 100, RED);
-        DrawCircle(GetScreenWidth() / 2, GetScreenHeight() / 2, 100, BLUE);
-        DrawTexturePro(sheet, {16, 0, 16, 16}, playerDestRect, {0, 0}, 0.0f, WHITE);
+        BeginMode2D(camera);
+
+        DrawCircle(400, 300, 50, RED);
+        DrawCircle(600, 500, 100, BLUE);
+        DrawTexturePro(sheet, (Rectangle){16, 0, 16, 16}, playerDestRect, (Vector2){0, 0}, 0.0f, WHITE); // Player texture
+
+        EndMode2D();
+
         EndDrawing();
     }
+
 
     UnloadRenderTexture(target);
     CloseWindow();
