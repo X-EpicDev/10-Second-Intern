@@ -61,8 +61,7 @@ int main(void) {
 
         DrawCircle(400, 300, 50, RED);
         DrawCircle(600, 500, 100, BLUE);
-        DrawTexturePro(sheet, (Rectangle){16, 0, 16, 16}, playerDestRect, (Vector2){0, 0}, 0.0f, WHITE);
-
+        DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, playerDestRect, (Vector2){0, 0}, 0.0f, WHITE);
         EndMode2D();
 
         EndDrawing();
