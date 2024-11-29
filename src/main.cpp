@@ -43,8 +43,8 @@ int main() {
             player.y -= movementSpeed * deltaTime;
         }
 
-        playerHitbox.x = player.x;
-        playerHitbox.y = player.y;
+        playerHitbox.x = player.x + 16;
+        playerHitbox.y = player.y + 4;
 
         camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
         camera.target = (Vector2){player.x + player.width / 2, player.y + player.height / 2};
@@ -63,7 +63,7 @@ int main() {
             DrawText("Skibidi", 100,100,20,WHITE);
         }
 
-        DrawRectanglePro(playerHitbox, (Vector2){-16, -4}, 0, YELLOW);
+        DrawRectanglePro(playerHitbox, (Vector2){0, 0}, 0, YELLOW);
         DrawTexturePro(sheet, (Rectangle){16.0001, 0, 15.9999, 15.9999}, player, (Vector2){0, 0}, 0, WHITE);
 
         EndMode2D();
