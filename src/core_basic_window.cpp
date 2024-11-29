@@ -5,7 +5,12 @@
 #define MIN(a, b) ((a)<(b)? (a) : (b))
 
 int main(void) {
+<<<<<<< Updated upstream
     //
+=======
+    float playerX = GetScreenWidth() / 2;
+    float playerY = GetScreenHeight() / 2;
+>>>>>>> Stashed changes
     const int windowWidth = 1080;
     const int windowHeight = 720;
     float playerX = GetScreenWidth() / 2;
@@ -23,7 +28,10 @@ int main(void) {
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     Texture2D sheet = LoadTexture("../sheet.png");
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
     SetTargetFPS(60);
 
@@ -31,7 +39,10 @@ int main(void) {
         // Update
         float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         Rectangle playerDestRect = {playerX, playerY, 64, 64};
         if (IsKeyDown('D')) {
             playerDestRect.x = playerX += 10;
