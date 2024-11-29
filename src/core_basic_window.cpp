@@ -13,7 +13,7 @@ int screenHeight = 450;
 //----------------------------------------------------------------------------------
 // Module Functions Declaration
 //----------------------------------------------------------------------------------
-void UpdateDrawFrame(void);     // Update and Draw one frame
+void UpdateDrawFrame();     // Update and Draw one frame
 
 //----------------------------------------------------------------------------------
 // Main Entry Point
@@ -22,6 +22,7 @@ int main()
 {
     // Initialization
     //--------------------------------------------------------------------------------------
+
     InitWindow(screenWidth, screenHeight, "QUT Summer Jam");
 
 #if defined(PLATFORM_WEB)
@@ -48,7 +49,7 @@ int main()
 //----------------------------------------------------------------------------------
 // Module Functions Definition
 //----------------------------------------------------------------------------------
-void UpdateDrawFrame(void)
+void UpdateDrawFrame()
 {
     // Update
     //----------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ void UpdateDrawFrame(void)
     BeginDrawing();
 
         ClearBackground(RAYWHITE);
-
+        DrawCircle(400,400,200,RED);
         DrawText("Hello World!", 190, 200, 20, RED);
 
     EndDrawing();

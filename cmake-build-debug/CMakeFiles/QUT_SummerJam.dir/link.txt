@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/QUT_SummerJam.dir/src/core_basic_window.cpp.o -o QUT_SummerJam  _deps/raylib-build/raylib/libraylib.a -lm -latomic -lpthread /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so _deps/raylib-build/raylib/external/glfw/src/libglfw3.a /usr/lib/x86_64-linux-gnu/librt.a -lm -ldl
