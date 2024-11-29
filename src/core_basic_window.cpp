@@ -5,7 +5,6 @@
 #define MIN(a, b) ((a)<(b)? (a) : (b))
 
 int main(void) {
-    //
     const int windowWidth = 1080;
     const int windowHeight = 720;
 
@@ -30,9 +29,9 @@ int main(void) {
         float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
 
         if (IsKeyDown('D')) {
-            playerDestRect.x += 10;
+            playerDestRect.x += 100 * GetFrameTime();
         } else if (IsKeyDown('A')) {
-            playerDestRect.x -= 10;
+            playerDestRect.x -= 100 * GetFrameTime();
         }
 
         // Update virtual mouse (clamped mouse value behind game screen)
