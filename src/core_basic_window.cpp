@@ -22,7 +22,7 @@
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int WinMain(void)
+int main(void)
 {
     //
     const int windowWidth = 1080;
@@ -41,9 +41,11 @@ int WinMain(void)
     RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);  // Texture scale filter to use
 
+    Texture2D sheet =  LoadTexture("../sheet.png");
+    Rectangle playerDestRect = { 100, 100, 64, 64 };
+    Vector2 origin = { 0, 0 };
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
 
     // Main game loop
     while (!WindowShouldClose())        // Detect window close button or ESC key
@@ -69,6 +71,7 @@ int WinMain(void)
         // Circle Drawing
         DrawCircle((GetScreenWidth() - ((float)100*scale))*0.5f, (GetScreenHeight() - ((float)100*scale))*0.5f, 100, RED);
         DrawCircle(GetScreenWidth()/2, GetScreenHeight()/2, 100, BLUE);
+        DrawTexturePro(sheet, { 16, 0, 16, 16 }, playerDestRect, origin, 0.0f, WHITE);
         EndDrawing();
         //--------------------------------------------------------------------------------------
     }
