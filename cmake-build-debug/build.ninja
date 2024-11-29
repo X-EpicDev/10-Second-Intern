@@ -49,13 +49,13 @@ cmake_ninja_workdir = V$:/CLion/C++$ Projects/QUT_SummerJam/cmake-build-debug/
 
 build cmake_object_order_depends_target_QUT_SummerJam: phony || cmake_object_order_depends_target_glfw cmake_object_order_depends_target_raylib
 
-build CMakeFiles/QUT_SummerJam.dir/core_basic_window.c.obj: C_COMPILER__QUT_SummerJam_unscanned_Debug V$:/CLion/C++$ Projects/QUT_SummerJam/core_basic_window.c || cmake_object_order_depends_target_QUT_SummerJam
+build CMakeFiles/QUT_SummerJam.dir/src/core_basic_window.cpp.obj: CXX_COMPILER__QUT_SummerJam_unscanned_Debug V$:/CLion/C++$ Projects/QUT_SummerJam/src/core_basic_window.cpp || cmake_object_order_depends_target_QUT_SummerJam
   DEFINES = -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP
-  DEP_FILE = CMakeFiles\QUT_SummerJam.dir\core_basic_window.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  DEP_FILE = CMakeFiles\QUT_SummerJam.dir\src\core_basic_window.cpp.obj.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
   INCLUDES = -I"V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-src/src" -I"V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-src/src/external/glfw/include"
   OBJECT_DIR = CMakeFiles\QUT_SummerJam.dir
-  OBJECT_FILE_DIR = CMakeFiles\QUT_SummerJam.dir
+  OBJECT_FILE_DIR = CMakeFiles\QUT_SummerJam.dir\src
 
 
 # =============================================================================
@@ -65,7 +65,7 @@ build CMakeFiles/QUT_SummerJam.dir/core_basic_window.c.obj: C_COMPILER__QUT_Summ
 #############################################
 # Link the executable QUT_SummerJam.exe
 
-build QUT_SummerJam.exe: C_EXECUTABLE_LINKER__QUT_SummerJam_Debug CMakeFiles/QUT_SummerJam.dir/core_basic_window.c.obj | _deps/raylib-build/raylib/libraylib.a _deps/raylib-build/raylib/external/glfw/src/libglfw3.a || _deps/raylib-build/raylib/external/glfw/src/libglfw3.a _deps/raylib-build/raylib/libraylib.a
+build QUT_SummerJam.exe: CXX_EXECUTABLE_LINKER__QUT_SummerJam_Debug CMakeFiles/QUT_SummerJam.dir/src/core_basic_window.cpp.obj | _deps/raylib-build/raylib/libraylib.a _deps/raylib-build/raylib/external/glfw/src/libglfw3.a || _deps/raylib-build/raylib/external/glfw/src/libglfw3.a _deps/raylib-build/raylib/libraylib.a
   FLAGS = -g
   LINK_LIBRARIES = _deps/raylib-build/raylib/libraylib.a  -lopengl32  -lglu32  -lwinmm  _deps/raylib-build/raylib/external/glfw/src/libglfw3.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\QUT_SummerJam.dir

@@ -1,9 +1,9 @@
 [
 {
   "directory": "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug",
-  "command": "G:\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\gcc.exe -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I\"V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-src/src\" -I\"V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-src/src/external/glfw/include\" -g -fdiagnostics-color=always -o CMakeFiles\\QUT_SummerJam.dir\\core_basic_window.c.obj -c \"V:\\CLion\\C++ Projects\\QUT_SummerJam\\core_basic_window.c\"",
-  "file": "V:\\CLion\\C++ Projects\\QUT_SummerJam\\core_basic_window.c",
-  "output": "CMakeFiles\\QUT_SummerJam.dir\\core_basic_window.c.obj"
+  "command": "G:\\AppData\\Local\\Programs\\CLion\\bin\\mingw\\bin\\g++.exe -DGRAPHICS_API_OPENGL_33 -DPLATFORM_DESKTOP -I\"V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-src/src\" -I\"V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-src/src/external/glfw/include\" -g -std=gnu++11 -fdiagnostics-color=always -o CMakeFiles\\QUT_SummerJam.dir\\src\\core_basic_window.cpp.obj -c \"V:\\CLion\\C++ Projects\\QUT_SummerJam\\src\\core_basic_window.cpp\"",
+  "file": "V:\\CLion\\C++ Projects\\QUT_SummerJam\\src\\core_basic_window.cpp",
+  "output": "CMakeFiles\\QUT_SummerJam.dir\\src\\core_basic_window.cpp.obj"
 },
 {
   "directory": "V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug",

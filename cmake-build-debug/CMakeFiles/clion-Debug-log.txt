@@ -6,12 +6,12 @@ CMake Warning (dev) at G:/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/c
   but the ability to call it with declared details will be removed completely
   in a future version.
 Call Stack (most recent call first):
-  CMakeLists.txt:20 (FetchContent_Populate)
+  CMakeLists.txt:22 (FetchContent_Populate)
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
 -- Populating raylib
--- Configuring done (0.1s)
--- Generating done (0.0s)
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
 -- Build files have been written to: V:/CLion/C++ Projects/QUT_SummerJam/cmake-build-debug/_deps/raylib-subbuild
 ninja: no work to do.
 CMake Deprecation Warning at cmake-build-debug/_deps/raylib-src/CMakeLists.txt:1 (cmake_minimum_required):
