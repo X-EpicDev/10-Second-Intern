@@ -1,69 +1,83 @@
+/*******************************************************************************************
+*
+*   raylib [core] example - window scale letterbox (and virtual mouse)
+*
+*   Example originally created with raylib 2.5, last time updated with raylib 4.0
+*
+*   Example contributed by Anata (@anatagawa) and reviewed by Ramon Santamaria (@raysan5)
+*
+*   Example licensed under an unmodified zlib/libpng license, which is an OSI-certified,
+*   BSD-like license that allows static linking with closed source software
+*
+*   Copyright (c) 2019-2024 Anata (@anatagawa) and Ramon Santamaria (@raysan5)
+*
+********************************************************************************************/
+
 #include "raylib.h"
+#include "raymath.h"        // Required for: Vector2Clamp()
 
-#if defined(PLATFORM_WEB)
-    #include <emscripten/emscripten.h>
-#endif
+#define MAX(a, b) ((a)>(b)? (a) : (b))
+#define MIN(a, b) ((a)<(b)? (a) : (b))
 
-//----------------------------------------------------------------------------------
-// Global Variables Definition
-//----------------------------------------------------------------------------------
-int screenWidth = 800;
-int screenHeight = 450;
-
-//----------------------------------------------------------------------------------
-// Module Functions Declaration
-//----------------------------------------------------------------------------------
-void UpdateDrawFrame();     // Update and Draw one frame
-
-//----------------------------------------------------------------------------------
-// Main Entry Point
-//----------------------------------------------------------------------------------
-int main()
+//------------------------------------------------------------------------------------
+// Program main entry point
+//------------------------------------------------------------------------------------
+int WinMain(void)
 {
-    // Initialization
-    //--------------------------------------------------------------------------------------
+    //
+    const int windowWidth = 1080;
+    const int windowHeight = 720;
 
-    InitWindow(screenWidth, screenHeight, "QUT Summer Jam");
+    // Enable config flags for resizable window and vertical synchro
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT);
+    InitWindow(windowWidth, windowHeight, "Resize Window");
+    SetWindowMinSize(320, 240);
 
-#if defined(PLATFORM_WEB)
-    emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
-#else
-    SetTargetFPS(60);   // Set our game to run at 60 frames-per-second
+    // current game size
+    int gameScreenWidth = 1080;
+    int gameScreenHeight = 720;
+
+    // Render texture initialization, used to hold the rendering result so we can easily resize it
+    RenderTexture2D target = LoadRenderTexture(gameScreenWidth, gameScreenHeight);
+    SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);  // Texture scale filter to use
+
+
+    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
     // Main game loop
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose())        // Detect window close button or ESC key
     {
-        UpdateDrawFrame();
+        // Update
+        //----------------------------------------------------------------------------------
+        // Compute the size
+        float scale = MIN((float)GetScreenWidth()/gameScreenWidth, (float)GetScreenHeight()/gameScreenHeight);
+
+
+        // Update virtual mouse (clamped mouse value behind game screen)
+        Vector2 mouse = GetMousePosition();
+        Vector2 virtualMouse = { 0 };
+        virtualMouse.x = (mouse.x - (GetScreenWidth() - (gameScreenWidth*scale))*0.5f)/scale;
+        virtualMouse.y = (mouse.y - (GetScreenHeight() - (gameScreenHeight*scale))*0.5f)/scale;
+        virtualMouse = Vector2Clamp(virtualMouse, (Vector2){ 0, 0 }, (Vector2){ (float)gameScreenWidth, (float)gameScreenHeight });
+
+
+        //drawing
+        BeginDrawing();
+        ClearBackground(BLACK);     // Clear screen background
+
+        // Circle Drawing
+        DrawCircle((GetScreenWidth() - ((float)100*scale))*0.5f, (GetScreenHeight() - ((float)100*scale))*0.5f, 100, RED);
+        DrawCircle(GetScreenWidth()/2, GetScreenHeight()/2, 100, BLUE);
+        EndDrawing();
+        //--------------------------------------------------------------------------------------
     }
-#endif
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    CloseWindow();        // Close window and OpenGL context
+    UnloadRenderTexture(target);        // Unload render texture
+    CloseWindow();                      // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
     return 0;
-}
-
-//----------------------------------------------------------------------------------
-// Module Functions Definition
-//----------------------------------------------------------------------------------
-void UpdateDrawFrame()
-{
-    // Update
-    //----------------------------------------------------------------------------------
-    // TODO: Update your variables here
-    //----------------------------------------------------------------------------------
-
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
-
-        ClearBackground(RAYWHITE);
-        DrawCircle(400,400,200,RED);
-        DrawText("Hello World!", 190, 200, 20, RED);
-
-    EndDrawing();
-    //----------------------------------------------------------------------------------
 }
