@@ -62,7 +62,7 @@ int main() {
 
         BeginMode2D(camera);
 
-        DrawTexturePro(mapText, map.getTextureArea(), map.getRectangle(), (Vector2){0,0}, 0, WHITE);
+        map.draw();
 
         DrawCircle(100, 75, 12.5, RED);
         if(CheckCollisionCircleRec((Vector2){100,75}, 12.5, player.getHitbox())) {
