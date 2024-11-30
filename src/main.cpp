@@ -19,7 +19,7 @@ int main() {
     bool debug = false;
 
     GameState gameState = WAITING;
-    float timer = 10;
+    float timer = 5;
     int score = 0;
 
     // Enable config flags for resizable window and vertical synchro
@@ -60,11 +60,13 @@ int main() {
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
                     gameState = PLAYING;
                 }
-
                 break;
             case PLAYING:
+                timer -= deltaTime;
                 if (timer <= 0) {
+                    timer = 0;
                     gameState = FINISHED;
+                    break;
                 }
 
                 if (IsKeyDown(KEY_D)) {
@@ -83,8 +85,6 @@ int main() {
                     debug = !debug;
                 }
 
-                timer -= deltaTime;
-
                 break;
             case FINISHED:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
@@ -94,7 +94,6 @@ int main() {
                     player.setY(25);
                     gameState = PLAYING;
                 }
-
                 break;
         }
 
@@ -140,8 +139,7 @@ int main() {
         // Debug
         if (debug) {
             DrawFPS(0, 32);
-            DrawText(("Position: " + std::to_string(player.getX()) + "," + std::to_string(player.getY())).c_str(), 0,
-                     48, 20, WHITE);
+            DrawText(("Position: " + std::to_string(player.getX()) + "," + std::to_string(player.getY())).c_str(), 0, 48, 20, WHITE);
             DrawText(("DeltaTime: " + std::to_string(deltaTime)).c_str(), 0, 64, 20, WHITE);
         }
 
