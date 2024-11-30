@@ -127,6 +127,7 @@ int main() {
                 break;
             case FINISHED:
                 DrawText(gameOverText.c_str(), GetScreenWidth() / 2 - gameOverTextWidth / 2, GetScreenHeight() / 3, 40, WHITE);
+                DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
                 // No break so it still renders score/timer for now
             case PLAYING:
                 DrawText(("Score: " + std::to_string(score)).c_str(), 0, 0, 20, WHITE);
