@@ -21,17 +21,10 @@ int main() {
 
     // Load textures
     Texture2D sheet = LoadTexture("../assets/sheet.png");
-
     Texture2D mapText = LoadTexture("../assets/large office.png");
-    Vector2 playerOffset{4,1};
-    playerOffset.x = 4;
-    playerOffset.y = 1;
-    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, playerOffset);
 
-    Vector2 mapOffset{0,0};
-    mapOffset.x = 0;
-    mapOffset.y = 0;
-    Object map(mapText, {0,0,448,320}, {0,0,448,320}, {0,0,0,0}, mapOffset);
+    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, Vector2{4, 1});
+    Object map(mapText, {0,0,448,320}, {0,0,448,320}, {0,0,0,0}, Vector2{0, 0});
 
     Camera2D camera;
     camera.rotation = 0.0f;
