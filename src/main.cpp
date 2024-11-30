@@ -73,16 +73,16 @@ int main() {
                     break;
                 }
 
-                if (IsKeyDown(KEY_D)) {
+                if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
                     player.setX(player.getX() + movementSpeed * deltaTime);
                 }
-                if (IsKeyDown(KEY_A)) {
+                if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
                     player.setX(player.getX() - movementSpeed * deltaTime);
                 }
-                if (IsKeyDown(KEY_S)) {
+                if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
                     player.setY(player.getY() + movementSpeed * deltaTime);
                 }
-                if (IsKeyDown(KEY_W)) {
+                if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
                     player.setY(player.getY() - movementSpeed * deltaTime);
                 }
                 break;
