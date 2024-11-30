@@ -32,6 +32,7 @@ int main() {
     mapOffset.x = 0;
     mapOffset.y = 0;
     Object map(mapText, {0,0,448,320}, {0,0,448,320}, {0,0,0,0}, mapOffset);
+
     Camera2D camera;
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
