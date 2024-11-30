@@ -44,7 +44,7 @@ int main() {
     int gameOverTextWidth = MeasureText(gameOverText.c_str(), 40);
 
     // Objects
-    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, Vector2{4, 1});
+    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9});
     Object map(mapText, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
 
     Camera2D camera;
