@@ -88,7 +88,10 @@ int main() {
                 break;
             case FINISHED:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
-                    // reset();
+                    timer = 10;
+                    score = 0;
+                    player.setX(25);
+                    player.setY(25);
                     gameState = PLAYING;
                 }
 
