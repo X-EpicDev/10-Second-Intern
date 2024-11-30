@@ -19,7 +19,7 @@ int main() {
     bool debug = false;
 
     GameState gameState = WAITING;
-    float timer = 5;
+    float timer = 10;
     int score = 0;
 
     // Enable config flags for resizable window and vertical synchro
@@ -54,6 +54,10 @@ int main() {
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
 
+        if (IsKeyPressed(KEY_F3)) {
+            debug = !debug;
+        }
+
         // Update
         switch (gameState) {
             case WAITING:
@@ -81,10 +85,6 @@ int main() {
                 if (IsKeyDown(KEY_W)) {
                     player.setY(player.getY() - movementSpeed * deltaTime);
                 }
-                if (IsKeyPressed(KEY_F3)) {
-                    debug = !debug;
-                }
-
                 break;
             case FINISHED:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
