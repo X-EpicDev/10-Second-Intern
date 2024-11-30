@@ -2,12 +2,11 @@
 
 #include "Object.h"
 #include "raylib.h"
-#include "player.cpp"
 
 int main() {
     const int windowWidth = 1080;
     const int windowHeight = 720;
-    const int movementSpeed = 75.0;
+    const float movementSpeed = 75.0f;
     bool debug = false;
 
     // Enable config flags for resizable window and vertical synchro
@@ -21,15 +20,18 @@ int main() {
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     // Load textures
-    Texture2D mapText = LoadTexture("../large office.png");
+    Texture2D sheet = LoadTexture("../assets/sheet.png");
 
-    Object player = PlayerInit();
+    Texture2D mapText = LoadTexture("../assets/large office.png");
+    Vector2 playerOffset{4,1};
+    playerOffset.x = 4;
+    playerOffset.y = 1;
+    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 15}, playerOffset);
 
     Vector2 mapOffset{0,0};
     mapOffset.x = 0;
     mapOffset.y = 0;
     Object map(mapText, {0,0,448,320}, {0,0,448,320}, {0,0,0,0}, mapOffset);
-
     Camera2D camera;
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
@@ -38,8 +40,18 @@ int main() {
         const float deltaTime = GetFrameTime();
 
         // Update
-        PlayerUpdates(player, 75.0f, deltaTime);
-
+        if (IsKeyDown(KEY_D)) {
+            player.setX(player.getX() + movementSpeed * deltaTime);
+        }
+        if (IsKeyDown(KEY_A)) {
+            player.setX(player.getX() - movementSpeed * deltaTime);
+        }
+        if (IsKeyDown(KEY_S)) {
+            player.setY(player.getY() + movementSpeed * deltaTime);
+        }
+        if (IsKeyDown(KEY_W)) {
+            player.setY(player.getY() - movementSpeed * deltaTime);
+        }
         if (IsKeyPressed(KEY_F3)) {
             debug = !debug;
         }
