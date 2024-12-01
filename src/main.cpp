@@ -85,6 +85,9 @@ int main() {
                 if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
                     player.setY(player.getY() - movementSpeed * deltaTime);
                 }
+                if (IsKeyPressed(KEY_E)) {
+                    timer = 10;
+                }
                 break;
             case FINISHED:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
