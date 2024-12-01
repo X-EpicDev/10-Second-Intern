@@ -152,15 +152,15 @@ int main() {
                 break;
         }
 
+        if(CheckCollisionRecs(r1, player.getHitbox())) {
+            player.setX(player.getX() + movementSpeed * deltaTime);
+        }
+
         camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
         camera.target = (Vector2){player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2};
 
         Vector2 mouse = GetMousePosition();
         Vector2 worldMouse = GetScreenToWorld2D(mouse, camera);
-
-        if(CheckCollisionRecs(r1, player.getHitbox())) {
-            player.setX(player.getX() + movementSpeed * deltaTime);
-        }
 
         // Drawing
         BeginDrawing();
