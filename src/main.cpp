@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -16,13 +17,45 @@ bool CheckCollisionWithTexture(const Rectangle rect, const Color* pixels, const 
     for (int y = static_cast<int>(rect.y); y < rect.y + rect.height; y++) {
         for (int x = static_cast<int>(rect.x); x < rect.x + rect.width; x++) {
             if (x >= 0 && x < textureWidth && y >= 0 && y < textureHeight) {
-                if (pixels[y * textureWidth + x].a > 0) {
+                int pixelIndex = y * textureWidth + x;
+                if (pixels[pixelIndex].a > 0) {
                     return true;
                 }
             }
         }
     }
     return false;
+}
+
+float ResolveAxisCollision(Rectangle* rect, const Color* pixels, const int textureWidth, const int textureHeight, const float delta, const char axis) {
+    if (delta == 0.0f) return 0.0f;
+
+    const float step = (delta > 0) ? 1.0f : -1.0f;
+    float remaining = delta;
+
+    while (remaining != 0.0f) {
+        if (axis == 'x') {
+            rect->x += step;
+        } else if (axis == 'y') {
+            rect->y += step;
+        }
+
+        if (CheckCollisionWithTexture(*rect, pixels, textureWidth, textureHeight)) {
+            if (axis == 'x') {
+                rect->x -= step;
+            } else if (axis == 'y') {
+                rect->y -= step;
+            }
+            break;
+        }
+
+        remaining -= step;
+        if ((delta > 0 && remaining < 0) || (delta < 0 && remaining > 0)) {
+            break;
+        }
+    }
+
+    return delta - remaining;
 }
 
 int main() {
@@ -32,7 +65,7 @@ int main() {
     bool debug = false;
 
     GameState gameState = WAITING;
-    float timer = 100;
+    float timer = 10;
     int score = 0;
 
     // Enable config flags for resizable window and vertical synchro
@@ -40,7 +73,7 @@ int main() {
     InitWindow(windowWidth, windowHeight, "Resize Window");
     SetWindowMinSize(320, 240);
 
-    // SetTargetFPS(60);
+    SetTargetFPS(60);
 
     RenderTexture2D target = LoadRenderTexture(windowWidth, windowHeight);
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
@@ -76,8 +109,6 @@ int main() {
         }
 
         // Update
-        Vector2 oldPosition;
-        bool collision;
         float dx = 0.0f;
         float dy = 0.0f;
         switch (gameState) {
@@ -111,17 +142,8 @@ int main() {
                     timer = 10;
                 }
 
-                oldPosition = {player.getX(), player.getY()};
-
-                player.setX(player.getX() + dx);
-                if (CheckCollisionWithTexture(player.getHitbox(), wallPixels, officeWallsImage.width, officeWallsImage.height)) {
-                    player.setX(oldPosition.x);
-                }
-
-                player.setY(player.getY() + dy);
-                if (CheckCollisionWithTexture(player.getHitbox(), wallPixels, officeWallsImage.width, officeWallsImage.height)) {
-                    player.setY(oldPosition.y);
-                }
+                player.setX(player.getX() + ResolveAxisCollision(&player.getHitbox(), wallPixels, officeWalls.width, officeWalls.height, dx, 'x'));
+                player.setY(player.getY() + ResolveAxisCollision(&player.getHitbox(), wallPixels, officeWalls.width, officeWalls.height, dy, 'y'));
 
                 break;
             case FINISHED:

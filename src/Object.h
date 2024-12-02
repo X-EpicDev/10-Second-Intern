@@ -63,7 +63,7 @@ public:
         this->object.height = height;
     }
 
-    Rectangle getHitbox() {
+    Rectangle& getHitbox() {
         return this->hitbox;
     }
 };
