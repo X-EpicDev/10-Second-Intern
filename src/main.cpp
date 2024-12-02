@@ -100,9 +100,10 @@ int main() {
     Camera2D camera;
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
-
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
+
+        //camera.rotation += (deltaTime * 3);
 
         if (IsKeyPressed(KEY_F3)) {
             debug = !debug;
