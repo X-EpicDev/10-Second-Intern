@@ -150,8 +150,8 @@ int main() {
         walls.draw();
 
         DrawCircle(100, 75, 12.5, RED);
-        if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox())) {
-            DrawText("Skibidi", 25, 25, 5, WHITE);
+        if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox()) && IsKeyDown(KEY_E)) {
+            DrawText("Run Minigame Now", 25, 25, 5, WHITE);
         }
 
         player.draw();
