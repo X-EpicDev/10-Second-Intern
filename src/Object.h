@@ -63,6 +63,14 @@ public:
         this->object.height = height;
     }
 
+    float getXOffset() const {
+        return this->hitboxOffset.x;
+    }
+
+    float getYOffset() const {
+        return this->hitboxOffset.y;
+    }
+
     Rectangle& getHitbox() {
         return this->hitbox;
     }

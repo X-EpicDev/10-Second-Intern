@@ -1,17 +1,21 @@
 #include <cmath>
 #include <iomanip>
-#include <iostream>
 #include <sstream>
 #include <string>
 
 #include "Object.h"
 #include "raylib.h"
+#include "minigames.cpp"
 
 enum GameState {
     WAITING,
     PLAYING,
     FINISHED
 };
+
+void ArrowControl(Vector2 point1, Vector2 point2, Vector2 point3) {
+    DrawTriangle(point1, point2, point3, GREEN);
+}
 
 bool CheckCollisionWithTexture(const Rectangle rect, const Color* pixels, const int textureWidth, const int textureHeight) {
     for (int y = static_cast<int>(rect.y); y < rect.y + rect.height; y++) {
@@ -100,6 +104,10 @@ int main() {
     Camera2D camera;
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
+
+    bool arrow_appear = false;
+    float tempTimer = 0.0f;
+
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
 
@@ -173,9 +181,23 @@ int main() {
         walls.draw();
 
         DrawCircle(100, 75, 12.5, RED);
-        if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox()) && IsKeyDown(KEY_E)) {
-            DrawText("Run Minigame Now", 25, 25, 5, WHITE);
+        if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox()) && IsKeyPressed(KEY_E) && arrow_appear == false) {
+
+            //insert a minigame function here
+            arrow_appear = true;
+            tempTimer = timer;
         }
+
+        if(arrow_appear == true && CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox())) {
+            ArrowControl({(player.getXOffset() * 2) + player.getX(), player.getYOffset() + player.getY() - 10}, {((player.getXOffset() * 2) + 10) + player.getX(), player.getYOffset() + player.getY() - 20}, {((player.getXOffset() * 2) - 10) + player.getX(), player.getYOffset() + player.getY() - 20});
+
+            if (timer <= tempTimer - 3) {
+                arrow_appear = false;
+            }
+        }
+
+
+
 
         player.draw();
 
