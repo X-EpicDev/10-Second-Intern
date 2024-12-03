@@ -5,7 +5,6 @@
 
 #include "Object.h"
 #include "raylib.h"
-#include "minigames.cpp"
 
 enum GameState {
     WAITING,
