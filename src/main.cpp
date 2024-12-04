@@ -119,11 +119,11 @@ int main() {
         ClearBackground(BLACK);
         BeginMode2D(camera);
 
-        floor.draw();
-        walls.draw();
+        floor.draw(debug);
+        walls.draw(debug);
 
         for (Object object : objects) {
-            object.draw();
+            object.draw(debug);
         }
 
         DrawCircle(100, 75, 12.5, RED);
@@ -142,7 +142,7 @@ int main() {
             }
         }
 
-        player.draw();
+        player.draw(debug);
 
         EndMode2D();
 
