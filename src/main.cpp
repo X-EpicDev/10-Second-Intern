@@ -53,7 +53,7 @@ int main() {
     int gameOverTextWidth = MeasureText(gameOverText.c_str(), 40);
 
     // Objects
-    Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9});
+    Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9}, {0, 0, 10, 10}, {3, 0});
     Object walls(officeWalls, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
     Image officeWallsImage = LoadImage("../assets/office_walls.png");
@@ -91,14 +91,10 @@ int main() {
                     break;
                 }
 
-                if (IsKeyPressed(KEY_E)) {
-                    timer = 10;
-                }
-
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
 
                 for (Object object : objects) {
-                    if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
+                    if (CheckCollisionRecs(object.getHitbox(), player.getInteractionHitbox())) {
                         player.currentObject = &object;
                         found = true;
                         break;
@@ -107,6 +103,10 @@ int main() {
 
                 if (!found) {
                     player.currentObject = nullptr;
+                }
+
+                if (IsKeyPressed(KEY_E)) {
+                    timer = 10;
                 }
 
                 break;

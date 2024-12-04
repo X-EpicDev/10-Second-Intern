@@ -49,10 +49,13 @@ private:
         return delta - remaining;
     }
 
+    Rectangle interactBox;
+    Vector2 interactBoxOffset;
+
 public:
     Object* currentObject{};
 
-    Player(Texture2D& sheet, Rectangle textureArea, Rectangle object, Rectangle hitbox, Vector2 hitboxOffset) : Object(sheet, textureArea, object, hitbox, hitboxOffset) {}
+    Player(Texture2D& sheet, Rectangle textureArea, Rectangle object, Rectangle hitbox, Vector2 hitboxOffset, Rectangle interactBox, Vector2 interactBoxOffset) : Object(sheet, textureArea, object, hitbox, hitboxOffset), interactBox(interactBox), interactBoxOffset(interactBoxOffset) {}
 
     void input(float deltaTime, float movementSpeed, Color* wallPixels, Texture2D* officeWalls) {
         float dx = 0.0f;
@@ -73,6 +76,27 @@ public:
 
         setX(getX() + ResolveAxisCollision(&getHitbox(), wallPixels, officeWalls->width, officeWalls->height, dx, 'x'));
         setY(getY() + ResolveAxisCollision(&getHitbox(), wallPixels, officeWalls->width, officeWalls->height, dy, 'y'));
+    }
+
+    void draw(bool debug) {
+        if (debug) {
+            DrawRectanglePro(this->interactBox, (Vector2){0, 0}, 0, BLUE);
+        }
+        Object::draw(debug);
+    }
+
+    void setX(const float x) {
+        Object::setX(x);
+        this->interactBox.x = x + this->interactBoxOffset.x;
+    }
+
+    void setY(const float y) {
+        Object::setY(y);
+        this->interactBox.y = y + this->interactBoxOffset.y;
+    }
+
+    Rectangle getInteractionHitbox() {
+        return this->interactBox;
     }
 };
 
