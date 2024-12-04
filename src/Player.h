@@ -50,6 +50,8 @@ private:
     }
 
 public:
+    Object* currentObject{};
+
     Player(Texture2D& sheet, Rectangle textureArea, Rectangle object, Rectangle hitbox, Vector2 hitboxOffset) : Object(sheet, textureArea, object, hitbox, hitboxOffset) {}
 
     void input(float deltaTime, float movementSpeed, Color* wallPixels, Texture2D* officeWalls) {

@@ -76,6 +76,7 @@ int main() {
         }
 
         // Update
+        bool found = false;
         switch (gameState) {
             case WAITING:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
@@ -95,6 +96,18 @@ int main() {
                 }
 
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
+
+                for (Object object : objects) {
+                    if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
+                        player.currentObject = &object;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    player.currentObject = nullptr;
+                }
 
                 break;
             case FINISHED:
@@ -143,6 +156,10 @@ int main() {
         }
 
         player.draw(debug);
+
+        if (player.currentObject != nullptr) {
+            DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
+        }
 
         EndMode2D();
 
