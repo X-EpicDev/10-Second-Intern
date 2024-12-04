@@ -2,8 +2,10 @@
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "Object.h"
+#include "Player.h"
 #include "raylib.h"
 
 enum GameState {
@@ -16,51 +18,6 @@ void ArrowControl(Vector2 point1, Vector2 point2, Vector2 point3) {
     DrawTriangle(point1, point2, point3, GREEN);
 }
 
-bool CheckCollisionWithTexture(const Rectangle rect, const Color* pixels, const int textureWidth, const int textureHeight) {
-    for (int y = static_cast<int>(rect.y); y < rect.y + rect.height; y++) {
-        for (int x = static_cast<int>(rect.x); x < rect.x + rect.width; x++) {
-            if (x >= 0 && x < textureWidth && y >= 0 && y < textureHeight) {
-                int pixelIndex = y * textureWidth + x;
-                if (pixels[pixelIndex].a > 0) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
-}
-
-float ResolveAxisCollision(Rectangle* rect, const Color* pixels, const int textureWidth, const int textureHeight, const float delta, const char axis) {
-    if (delta == 0.0f) return 0.0f;
-
-    const float step = (delta > 0) ? 1.0f : -1.0f;
-    float remaining = delta;
-
-    while (remaining != 0.0f) {
-        if (axis == 'x') {
-            rect->x += step;
-        } else if (axis == 'y') {
-            rect->y += step;
-        }
-
-        if (CheckCollisionWithTexture(*rect, pixels, textureWidth, textureHeight)) {
-            if (axis == 'x') {
-                rect->x -= step;
-            } else if (axis == 'y') {
-                rect->y -= step;
-            }
-            break;
-        }
-
-        remaining -= step;
-        if ((delta > 0 && remaining < 0) || (delta < 0 && remaining > 0)) {
-            break;
-        }
-    }
-
-    return delta - remaining;
-}
-
 int main() {
     const int windowWidth = 1080;
     const int windowHeight = 720;
@@ -70,6 +27,8 @@ int main() {
     GameState gameState = WAITING;
     float timer = 10;
     int score = 0;
+
+    std::vector<Object> objects;
 
     // Enable config flags for resizable window and vertical synchro
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -94,11 +53,12 @@ int main() {
     int gameOverTextWidth = MeasureText(gameOverText.c_str(), 40);
 
     // Objects
-    Object player(sheet, {16.0001, 0, 15.9999, 15.9999}, {25, 25, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9});
+    Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9});
     Object walls(officeWalls, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
     Image officeWallsImage = LoadImage("../assets/office_walls.png");
     Color* wallPixels = LoadImageColors(officeWallsImage);
+    objects.emplace_back(sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{16, 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0});
 
     Camera2D camera;
     camera.rotation = 0.0f;
@@ -109,7 +69,6 @@ int main() {
 
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
-
         //camera.rotation += (deltaTime * 3);
 
         if (IsKeyPressed(KEY_F3)) {
@@ -117,8 +76,6 @@ int main() {
         }
 
         // Update
-        float dx = 0.0f;
-        float dy = 0.0f;
         switch (gameState) {
             case WAITING:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
@@ -133,25 +90,11 @@ int main() {
                     break;
                 }
 
-
-                if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)) {
-                    dx += movementSpeed * deltaTime;
-                }
-                if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) {
-                    dx -= movementSpeed * deltaTime;
-                }
-                if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) {
-                    dy += movementSpeed * deltaTime;
-                }
-                if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP)) {
-                    dy -= movementSpeed * deltaTime;
-                }
                 if (IsKeyPressed(KEY_E)) {
                     timer = 10;
                 }
 
-                player.setX(player.getX() + ResolveAxisCollision(&player.getHitbox(), wallPixels, officeWalls.width, officeWalls.height, dx, 'x'));
-                player.setY(player.getY() + ResolveAxisCollision(&player.getHitbox(), wallPixels, officeWalls.width, officeWalls.height, dy, 'y'));
+                player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
 
                 break;
             case FINISHED:
@@ -179,6 +122,10 @@ int main() {
         floor.draw();
         walls.draw();
 
+        for (Object object : objects) {
+            object.draw();
+        }
+
         DrawCircle(100, 75, 12.5, RED);
         if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox()) && IsKeyPressed(KEY_E) && arrow_appear == false) {
 
@@ -194,9 +141,6 @@ int main() {
                 arrow_appear = false;
             }
         }
-
-
-
 
         player.draw();
 
