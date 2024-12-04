@@ -105,8 +105,11 @@ int main() {
                     player.currentObject = nullptr;
                 }
 
-                if (IsKeyPressed(KEY_E)) {
+                if (IsKeyPressed(KEY_Q)) {
                     timer = 10;
+                }
+                if (IsKeyPressed(KEY_E) && player.currentObject != nullptr) {
+                    player.currentObject->interact();
                 }
 
                 break;

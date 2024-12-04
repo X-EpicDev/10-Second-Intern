@@ -23,6 +23,8 @@ public:
         DrawTexturePro(sheet, this->textureArea, this->object, (Vector2){0, 0}, 0, WHITE);
     }
 
+    virtual void interact() {};
+
     Rectangle getTextureArea() {
         return this->textureArea;
     }
