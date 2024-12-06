@@ -48,13 +48,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y \
           libxrandr-dev libx11-dev libxext-dev libxrender-dev libxi-dev \
-          libxinerama-dev libxcursor-dev
+          libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev
 
     - name: Install dependencies (macOS only)
       if: runner.os == 'macOS'
       run: |
         brew update
         brew install cmake
+        brew install glfw
 
     - name: Set reusable strings
       id: strings
