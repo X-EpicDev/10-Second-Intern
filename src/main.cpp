@@ -83,34 +83,33 @@ int main() {
     SetWindowIcon(appIcon);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 16 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 16 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 3, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 5, 16 + 16 * 4, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 19, 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
     };
     objects.emplace(Types::PRINTER, printers);
 
     std::vector<Object> machines = {
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 8, 8 + 16, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8, 8 + 16 * 8, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 8, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 12, 16 - 8, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
     };
     objects.emplace(Types::MACHINE, machines);
 
     std::vector<Object> coffee = {
-        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 14 + 16 * 2, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{16 * 5, 16 * 2, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 20, 16, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
     };
     objects.emplace(Types::COFFEE, coffee);
 
     std::vector<Object> water = {
-        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
-        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 9, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 11, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 19, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
     };
     objects.emplace(Types::WATER, water);
 
     std::vector<Object> stinky = {
-        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 6, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 16}},
+        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 17, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 16}},
+        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 18, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 16}},
     };
     objects.emplace(Types::STINKY, stinky);
 
@@ -223,6 +222,7 @@ int main() {
         DrawCircle(100, 75, 12.5, RED);
 
         floor.draw(debug);
+        walls.draw(debug);
         tableLayer.draw(debug);
 
         for (auto& objectKey : objects) {
@@ -231,7 +231,6 @@ int main() {
             }
         }
 
-        walls.draw(debug);
         player.draw(debug);
         overlay.draw(debug);
 
