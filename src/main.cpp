@@ -218,8 +218,6 @@ int main() {
                 Vector2 targetPosition = {currentTask->getNextObject()->getX(), currentTask->getNextObject()->getY()};  // Target position
                 DrawLineEx({player.getX(), player.getY()}, targetPosition,5, RED);
             }
-
-
         }
 
         EndMode2D();
