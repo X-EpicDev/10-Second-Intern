@@ -128,15 +128,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up CMake
-      uses: cmake/setup-cmake@v3  # Corrected action for CMake setup
-      with:
-        cmake-version: '3.21.0'  # Specify the desired CMake version
-
     - name: Install MinGW (GCC/G++)
       run: |
         choco install mingw -y  # Install MinGW for GCC/G++ on Windows
         refreshenv  # Ensure the environment variables are updated
+
+    - name: Install CMake
+      run: |
+        choco install cmake -y  # Install CMake using Chocolatey
 
     - name: Install Raylib dependencies
       run: |
