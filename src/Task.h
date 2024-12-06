@@ -12,7 +12,9 @@
 enum class Types {
     PRINTER,
     MACHINE,
-    COFFEE
+    COFFEE,
+    WATER,
+    STINKY
 };
 
 class Task {
