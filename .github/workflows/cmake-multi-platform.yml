@@ -124,7 +124,7 @@ jobs:
 
     env:
       PROJECT_NAME: 10SecondIntern
-      PROJECT_BUILD_PATH: "projects\\VS2022\\build\\10SecondIntern\\bin\\x64\\Release"
+      PROJECT_BUILD_PATH: "10SecondIntern\\projects\\VS2022\\build\\10SecondIntern\\bin\\x64\\Release"
       PROJECT_RELEASE_PATH: 10SecondIntern_dev_win_x64
       PROJECT_RESOURCES_PATH: resources
 
@@ -164,6 +164,14 @@ jobs:
         cd ${{ env.PROJECT_NAME }}/projects/VS2022
         msbuild.exe ${{ env.PROJECT_NAME }}.sln /target:${{ env.PROJECT_NAME }} /property:Configuration=Release /property:Platform=x64 /property:RaylibSrcPath="..\..\..\..\raylib\src"
         cd ../..
+      shell: cmd
+
+    - name: Check Build Directories
+      run: |
+        echo "Listing directories after build..."
+        dir ${{ env.PROJECT_NAME }}/projects/VS2022/build /s
+        echo "Checking bin directory..."
+        dir ${{ env.PROJECT_NAME }}/projects/VS2022/build/10SecondIntern/bin /s
       shell: cmd
 
     - name: Collect executable and assets
