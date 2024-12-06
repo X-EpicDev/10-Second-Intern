@@ -201,7 +201,8 @@ int main() {
                     player.currentObject = nullptr;
                 }
 
-                if (IsKeyPressed(KEY_E) && player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
+                if ((IsKeyPressed(KEY_E) || IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+                        && player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
                     player.currentObject->interact();
                     if (currentTask->pickRandom(objects)) {
                         score++;
@@ -249,7 +250,7 @@ int main() {
         overlay.draw(debug);
 
         if (player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
-            DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
+            DrawText("Press 'E' or click", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
         }
 
         if(currentTask != nullptr) {
