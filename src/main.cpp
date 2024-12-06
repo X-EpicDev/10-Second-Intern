@@ -278,14 +278,14 @@ int main() {
         std::string text;
         switch (gameState) {
             case WAITING:
-                DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
+                DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, static_cast<int>(static_cast<float>(GetScreenHeight()) / 5.0f * 3.5f), 20, WHITE);
 
                 DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), (Color){0, 191, 255, 255});
                 DrawTextureEx(startImage, (Vector2){ posX, posY }, 0.0f, scale, WHITE);
                 break;
             case FINISHED:
                 DrawText(gameOverText.c_str(), GetScreenWidth() / 2 - gameOverTextWidth / 2, GetScreenHeight() / 3, 40, WHITE);
-                DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
+                DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, static_cast<int>(static_cast<float>(GetScreenHeight()) / 5.0f * 3.5f), 20, WHITE);
 
                 DrawText(("Score: " + std::to_string(score)).c_str(), GetScreenWidth() / 2 - MeasureText(("Score: " + std::to_string(score)).c_str(), 30), GetScreenHeight() / 3 + 48, 30, WHITE);
                 break;
