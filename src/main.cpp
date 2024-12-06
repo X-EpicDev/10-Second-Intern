@@ -63,10 +63,19 @@ int main() {
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER}); // Do not list more than exists on the map or death happens
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER, Types::PRINTER});
     tasks.emplace_back(std::list<Types>{Types::PRINTER});
+    tasks.emplace_back(std::list<Types>{Types::MACHINE, Types::PRINTER});
     tasks.emplace_back(std::list<Types>{Types::MACHINE});
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::MACHINE});
     tasks.emplace_back(std::list<Types>{Types::WATER, Types::STINKY});
     tasks.emplace_back(std::list<Types>{Types::WATER, Types::STINKY, Types::WATER});
+    tasks.emplace_back(std::list<Types>{Types::COFFEE, Types::STINKY});
+    tasks.emplace_back(std::list<Types>{Types::COFFEE, Types::STINKY, Types::STINKY});
+    tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::COFFEE});
+    tasks.emplace_back(std::list<Types>{Types::MACHINE, Types::COFFEE});
+    tasks.emplace_back(std::list<Types>{Types::STINKY, Types::COFFEE});
+    tasks.emplace_back(std::list<Types>{Types::COFFEE, Types::PRINTER, Types::PRINTER});
+    tasks.emplace_back(std::list<Types>{Types::WATER, Types::MACHINE, Types::COFFEE});
+    tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::MACHINE, Types::PRINTER});
 
     // Objects
     Player player(sheet, {16.0001, 32.0001, 15.9999, 31.9999}, {32, 32, 16, 32}, {0, 0, 8, 9}, Vector2{4, 22}, {0, 0, 10, 16}, {3, 10});
