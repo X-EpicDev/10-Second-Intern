@@ -154,7 +154,7 @@ jobs:
         dir build/10SecondIntern.dir
         dir build/Release
         cp build/Release/10SecondIntern.exe output/
-        cp -r build/assets output/
+        cp -r build/Release/assets output/
         ls -alh output/
   
     - name: Upload build artifacts
