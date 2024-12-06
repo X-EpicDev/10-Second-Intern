@@ -141,9 +141,6 @@ jobs:
     - name: Install CMake
       run: |
         choco install cmake -y  # Install CMake using Chocolatey
-  
-    - name: Install SDL2
-      run: choco install sdl2 --pre -y
       
     - name: Install GLFW
       run: choco install glfw --pre -y
