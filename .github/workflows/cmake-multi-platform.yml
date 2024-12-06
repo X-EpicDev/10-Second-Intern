@@ -131,22 +131,27 @@ jobs:
     - name: Install MinGW (GCC/G++)
       run: |
         choco install mingw -y  # Install MinGW for GCC/G++ on Windows
-        refreshenv  # Ensure the environment variables are updated
+        refreshenv  # Refresh the environment to ensure PATH is updated
 
     - name: Install CMake
       run: |
         choco install cmake -y  # Install CMake using Chocolatey
-
+  
     - name: Install Raylib dependencies
       run: |
         choco install sdl2 glfw freetype libsndfile -y  # Install Raylib dependencies using Chocolatey
-
+  
+    - name: Wait for environment to refresh
+      run: |
+        # Adding a small wait time to ensure the environment is refreshed
+        sleep 10  # This can be adjusted as needed
+  
     - name: Create build directory
       run: |
         mkdir build
         cd build
         cmake .. -G "MinGW Makefiles"  # Use MinGW Makefiles generator for CMake
-
+  
     - name: Build the project
       run: |
         cd build
