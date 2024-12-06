@@ -6,9 +6,9 @@ set(CMAKE_CXX_STANDARD 11)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-IF (WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS "-static")
-ENDIF()
+# d IF (WIN32)
+# d     set(CMAKE_EXE_LINKER_FLAGS "-static")
+# d ENDIF()
 
 # Dependencies
 set(RAYLIB_VERSION 5.5)
