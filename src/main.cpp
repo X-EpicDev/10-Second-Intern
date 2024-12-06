@@ -89,6 +89,11 @@ int main() {
     };
     objects.emplace(Types::MACHINE, machines);
 
+    std::vector<Object> coffee = {
+        Machine{sheet, Rectangle{0, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 2, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+    };
+    objects.emplace(Types::COFFEE, coffee);
+
     Camera2D camera;
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
