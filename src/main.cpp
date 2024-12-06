@@ -19,7 +19,11 @@ enum GameState {
     FINISHED
 };
 
+#ifdef _WIN32
+int WinMain(void) {
+#else
 int main() {
+#endif
     const int windowWidth = 1080;
     const int windowHeight = 720;
     const float movementSpeed = 75.0f;

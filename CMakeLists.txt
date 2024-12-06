@@ -37,10 +37,6 @@ add_executable(${PROJECT_NAME} ${all_SRCS})
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
-if (WIN32)
-    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-mwindows")
-endif()
-
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
     # Tell Emscripten to build an example.html file.
