@@ -141,7 +141,6 @@ jobs:
         mkdir -p build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Release --verbose
-        ls -alh
 
     - name: Build CMake
       run: |
