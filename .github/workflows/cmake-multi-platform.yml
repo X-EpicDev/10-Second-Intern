@@ -130,6 +130,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Set up CMake
+      uses: actions/setup-cmake@v2
+      with:
+        cmake-version: '3.21'
+
     - name: Set reusable strings
       id: strings
       shell: bash
@@ -138,12 +143,15 @@ jobs:
 
     - name: Configure CMake
       run: |
-        mkdir build
+        mkdir -p build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release
+        cmake .. -DCMAKE_BUILD_TYPE=Release --verbose
+        ls -alh
 
-    - name: Build
-      run: cmake --build .
+    - name: Build CMake
+      run: |
+        cd build
+        cmake --build .
 
     - name: Collect executable and assets
       run: |
