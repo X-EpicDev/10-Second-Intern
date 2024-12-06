@@ -143,19 +143,12 @@ int main() {
                 beforePos.x = player.getX();
                 beforePos.y = player.getY();
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
-                newPos.x = player.getX();
-                newPos.y = player.getY();
-
-                player.setX(beforePos.x);
-                player.setY(beforePos.y);
 
                 for (auto& objectKey : objects) {
                     for (Object& object : objectKey.second) {
-                        player.setY(newPos.y);
                         if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
                             player.setY(beforePos.y);
                         }
-                        player.setX(newPos.x);
                         if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
                             player.setX(beforePos.x);
                         }
@@ -242,6 +235,34 @@ int main() {
             DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
         }
 
+        { // TODO: AAAA TRIANGLE
+            Vector2 targetPosition = { 600, 400 };
+
+            float triangleSize = 30.0f;
+            Vector2 trianglePosition = { player.getX(), player.getY() - 50 };
+
+            Vector2 direction = { targetPosition.x - player.getX(), targetPosition.y - player.getY() };
+            float angle = atan2(direction.y, direction.x); // Calculate the angle to the target
+
+            // Define the triangle points (relative to the player)
+            Vector2 point1 = { trianglePosition.x - triangleSize / 2, trianglePosition.y + triangleSize / 2 };
+            Vector2 point2 = { trianglePosition.x + triangleSize / 2, trianglePosition.y + triangleSize / 2 };
+            Vector2 point3 = { trianglePosition.x, trianglePosition.y - triangleSize };
+
+            // Apply rotation to the triangle points based on the angle
+            Matrix rotationMatrix = MatrixRotate({0,0,0}, angle);  // Create a rotation matrix
+            point1 = Vector2Transform(point1, rotationMatrix);
+            point2 = Vector2Transform(point2, rotationMatrix);
+            point3 = Vector2Transform(point3, rotationMatrix);
+
+            // Adjust the triangle's position based on the player
+            point1 = Vector2Add(point1, {player.getX(), player.getY()});
+            point2 = Vector2Add(point2, {player.getX(), player.getY()});
+            point3 = Vector2Add(point3, {player.getX(), player.getY()});
+
+            // DrawTriangle(point1, point2, point3, GREEN);
+        }
+
         EndMode2D();
 
         std::ostringstream stream;
@@ -254,6 +275,10 @@ int main() {
                 DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
                  //No break so it still renders score/timer for now
             case PLAYING:
+
+
+
+
                 DrawText(("Score: " + std::to_string(score)).c_str(), 0, 0, 20, WHITE);
                 // Format to 1 decimal place
                 stream << std::fixed << std::setprecision(1) << std::round(timer * 10) / 10.0;
