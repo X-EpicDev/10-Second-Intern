@@ -46,7 +46,9 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         sudo apt-get update
-        sudo apt-get install -y libxrandr-dev libx11-dev libxext-dev libxrender-dev libxi-dev
+        sudo apt-get install -y \
+          libxrandr-dev libx11-dev libxext-dev libxrender-dev libxi-dev \
+          libxinerama-dev
 
     - name: Install dependencies (macOS only)
       if: runner.os == 'macOS'
