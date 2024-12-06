@@ -25,8 +25,6 @@ int main() {
     const float movementSpeed = 75.0f;
     bool debug = false;
 
-
-
     GameState gameState = WAITING;
     float timer = 10;
     float cooldown = 2.5f;
