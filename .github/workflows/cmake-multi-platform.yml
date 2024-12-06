@@ -151,7 +151,9 @@ jobs:
       run: |
         mkdir -p output
         dir build
-        cp build/10SecondIntern.exe output/
+        dir build/10SecondIntern.dir
+        dir build/Release
+        cp build/Release/10SecondIntern.exe output/
         cp -r build/assets output/
         ls -alh output/
   
