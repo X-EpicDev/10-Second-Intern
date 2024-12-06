@@ -164,6 +164,8 @@ int main() {
         ClearBackground(BLACK);
         BeginMode2D(camera);
 
+        DrawCircle(100, 75, 12.5, RED);
+
         floor.draw(debug);
         walls.draw(debug);
 
@@ -173,7 +175,6 @@ int main() {
             }
         }
 
-        DrawCircle(100, 75, 12.5, RED);
         if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox()) && IsKeyPressed(KEY_E) && arrow_appear == false) {
 
             //insert a minigame function here
