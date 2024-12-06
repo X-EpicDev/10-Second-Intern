@@ -115,77 +115,75 @@ jobs:
       run: ctest --build-config ${{ matrix.build_type }}
 
   build-windows:
+    permissions:
+      contents: write       # for actions/upload-release-asset to upload release asset
     runs-on: windows-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        build_type: [Release]
-        c_compiler: [gcc]
-        cpp_compiler: [g++]
-        
+    env:
+      PROJECT_NAME: ${{ github.event.repository.name }}
+      PROJECT_BUILD_PATH: "${{ github.event.repository.name }}\\projects\\VS2022\\build\\${{ github.event.repository.name }}\\bin\\x64\\Release"
+      PROJECT_RELEASE_PATH: ${{ github.event.repository.name }}_dev_win_x64
+      PROJECT_RESOURCES_PATH: resources
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-
-    - name: Install MinGW (GCC/G++)
-      run: |
-        choco install mingw -y  # Install MinGW for GCC/G++ on Windows
-        echo "Adding MinGW to PATH"
-        setx PATH "%PATH%;C:\ProgramData\mingw64\mingw32\bin;C:\ProgramData\mingw64\mingw64\bin"  # Manually add MinGW to PATH
-
-    - name: Wait for environment to refresh
-      run: |
-        sleep 10
-
-    - name: Install CMake
-      run: |
-        choco install cmake -y  # Install CMake using Chocolatey
-      
-    - name: Install GLFW
-      run: choco install glfw -y
-      
-    - name: Install Freetype
-      run: choco install freetype -y
-      
-    - name: Install Libsndfile
-      run: choco install libsndfile -y
-        
-    - name: Install SDL2 manually
-      run: |
-        Invoke-WebRequest -Uri "https://www.libsdl.org/release/SDL2-2.26.5-win64-x64.zip" -OutFile "SDL2.zip"
-        Expand-Archive -Path "SDL2.zip" -DestinationPath "C:\libsdl2"
-        echo "C:\libsdl2\bin" | setx PATH "%PATH%"
-  
-    - name: Wait for environment to refresh
-      run: |
-        # Adding a small wait time to ensure the environment is refreshed
-        sleep 10  # This can be adjusted as needed
-  
-    - name: Create build directory
-      run: |
-        mkdir build
-        cd build
-        cmake .. -G "MinGW Makefiles"  # Use MinGW Makefiles generator for CMake
-  
-    - name: Build the project
-      run: |
-        cd build
-        mingw32-make  # Use mingw32-make to build the project
-        
-    - name: Collect executable and assets
-      run: |
-        mkdir -p output
-        cp build/10SecondIntern.exe output/
-        cp -r build/assets output/
-        ls -alh output/
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+    - name: Checkout this repo
+      uses: actions/checkout@master
       with:
-        name: build-artifacts
-        path: output/
+        path: ${{ env.PROJECT_NAME }}
+      
+    - name: Checkout raylib repo
+      uses: actions/checkout@v4
+      with:
+        repository: raysan5/raylib
+        path: raylib
+        
+    # NOTE: Visual Studio project build configuration already defines all required directories where project is generated:
+    # $(SolutionDir)\build\$(ProjectName)\bin\$(Platform)\$(Configuration)\
+    - name: Setup Release Paths
+      run: |
+        echo "PROJECT_RELEASE_PATH=${{ env.PROJECT_NAME }}_v${{ github.event.release.tag_name }}_win_x64" >> $GITHUB_ENV
+      shell: bash
+      if: github.event_name == 'release' && github.event.action == 'published'
 
-    - name: Test
-      working-directory: ${{ steps.strings.outputs.build-output-dir }}
-      run: ctest --build-config ${{ matrix.build_type }}
+    - name: Setup Environment
+      run: | 
+        mkdir ${{ env.PROJECT_RELEASE_PATH }}
+        dir
+      shell: cmd
+
+    # Setup MSBuild.exe path if required
+    - name: Setup MSBuild path
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Build raylib Library + Product (VS2022 solution)
+      run: |
+        dir
+        cd ${{ env.PROJECT_NAME }}/projects/VS2022
+        msbuild.exe ${{ env.PROJECT_NAME }}.sln /target:${{ env.PROJECT_NAME }} /property:Configuration=Release /property:Platform=x64 /property:RaylibSrcPath="..\..\..\..\raylib\src"
+        cd ../..
+      shell: cmd
+
+    - name: Generate Artifacts
+      run: |
+        dir ${{ env.PROJECT_BUILD_PATH }}
+        copy /Y ${{ env.PROJECT_BUILD_PATH }}\${{ env.PROJECT_NAME }}.exe ${{ env.PROJECT_RELEASE_PATH }}\${{ env.PROJECT_NAME }}.exe
+        xcopy ${{ env.PROJECT_NAME }}\${{ env.PROJECT_RESOURCES_PATH }} ${{ env.PROJECT_RELEASE_PATH }}\${{ env.PROJECT_RESOURCES_PATH }} /s /e /i
+        copy /Y ${{ env.PROJECT_NAME }}\README.md ${{ env.PROJECT_RELEASE_PATH }}\README.md
+        copy /Y ${{ env.PROJECT_NAME }}\LICENSE ${{ env.PROJECT_RELEASE_PATH }}\LICENSE
+        dir ${{ env.PROJECT_RELEASE_PATH }}
+        7z a .\${{ env.PROJECT_RELEASE_PATH }}.zip .\${{ env.PROJECT_RELEASE_PATH }}
+      shell: cmd
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ env.PROJECT_RELEASE_PATH }}.zip
+        path: ./${{ env.PROJECT_RELEASE_PATH }}.zip
+
+    - name: Upload Artifact to Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ env.PROJECT_RELEASE_PATH }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: github.event_name == 'release' && github.event.action == 'published'
