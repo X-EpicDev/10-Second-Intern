@@ -6,10 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# d IF (WIN32)
-# d     set(CMAKE_EXE_LINKER_FLAGS "-static")
-# d ENDIF()
-
 # Dependencies
 set(RAYLIB_VERSION 5.5)
 
@@ -40,6 +36,10 @@ file(GLOB all_SRCS
 add_executable(${PROJECT_NAME} ${all_SRCS})
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
+
+if (WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "-mwindows")
+endif()
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")
