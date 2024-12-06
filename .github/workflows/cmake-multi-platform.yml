@@ -137,7 +137,7 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
-      run:
+      run: |
         mkdir build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=Release
