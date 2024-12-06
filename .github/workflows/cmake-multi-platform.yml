@@ -140,7 +140,7 @@ jobs:
       run: |
         mkdir -p build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=Release --verbose
+        cmake .. -DCMAKE_BUILD_TYPE=Release
 
     - name: Build CMake
       run: |
