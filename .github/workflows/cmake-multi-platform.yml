@@ -122,64 +122,33 @@ jobs:
       contents: write       # for actions/upload-release-asset to upload release asset
     runs-on: windows-latest
 
-    env:
-      PROJECT_NAME: 10SecondIntern
-      PROJECT_BUILD_PATH: "10SecondIntern\\projects\\VS2022\\build\\10SecondIntern\\bin\\x64\\Release"
-      PROJECT_RELEASE_PATH: 10SecondIntern_dev_win_x64
-      PROJECT_RESOURCES_PATH: resources
-
     steps:
-    - name: Checkout this repo
-      uses: actions/checkout@master
-      with:
-        path: ${{ env.PROJECT_NAME }}
-      
-    - name: Checkout raylib repo
-      uses: actions/checkout@v4
-      with:
-        repository: raysan5/raylib
-        path: raylib
-        
-    # NOTE: Visual Studio project build configuration already defines all required directories where project is generated:
-    # $(SolutionDir)\build\$(ProjectName)\bin\$(Platform)\$(Configuration)\
-    - name: Setup Release Paths
-      run: |
-        echo "PROJECT_RELEASE_PATH=${{ env.PROJECT_NAME }}_v${{ github.event.release.tag_name }}_win_x64" >> $GITHUB_ENV
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
       shell: bash
-      if: github.event_name == 'release' && github.event.action == 'published'
-
-    - name: Setup Environment
-      run: | 
-        mkdir ${{ env.PROJECT_RELEASE_PATH }}
-        dir
-      shell: cmd
-
-    # Setup MSBuild.exe path if required
-    - name: Setup MSBuild path
-      uses: microsoft/setup-msbuild@v2
-
-    - name: Build raylib Library + Product (VS2022 solution)
       run: |
-        dir
-        cd ${{ env.PROJECT_NAME }}/projects/VS2022
-        msbuild.exe ${{ env.PROJECT_NAME }}.sln /target:${{ env.PROJECT_NAME }} /property:Configuration=Release /property:Platform=x64 /property:RaylibSrcPath="..\..\..\..\raylib\src"
-        cd ../..
-      shell: cmd
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
-    - name: Collect executable dynamically and print directory
-      run: |
-        mkdir -p output
-        dir ${{ env.PROJECT_NAME }}\projects\VS2022\
-        dir ${{ env.PROJECT_NAME }}
-        dir ${{ env.PROJECT_NAME }}\projects\
-        for /R ${{ env.PROJECT_NAME }}\projects\VS2022\build %%G in (10SecondIntern.exe) do (
-          echo Found executable in: %%~dpG
-          copy "%%G" output\
-        )
-        cp -r build/assets output/
-        dir output
-      shell: cmd
+    - name: Configure CMake
+      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
 
+    - name: Build
+      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Upload build files
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts-${{ matrix.os }}  # Unique name per OS
+        path: ${{ steps.strings.outputs.build-output-dir }}
 
     # - name: Collect executable and assets
     #   run: |
@@ -188,16 +157,16 @@ jobs:
     #     cp -r build/assets output/
     #     ls -alh output/
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: build-artifacts
-        path: output/
+    # - name: Upload build artifacts
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: build-artifacts
+    #     path: output/
 
-    - name: Upload Artifact to Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: ${{ env.PROJECT_RELEASE_PATH }}.zip
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'release' && github.event.action == 'published'
+    # - name: Upload Artifact to Release
+    #   uses: softprops/action-gh-release@v1
+    #   with:
+    #     files: ${{ env.PROJECT_RELEASE_PATH }}.zip
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   if: github.event_name == 'release' && github.event.action == 'published'
