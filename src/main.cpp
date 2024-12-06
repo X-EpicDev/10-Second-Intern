@@ -25,6 +25,8 @@ int main() {
     const float movementSpeed = 75.0f;
     bool debug = false;
 
+
+
     GameState gameState = WAITING;
     float timer = 10;
     float cooldown = 2.5f;
@@ -73,7 +75,10 @@ int main() {
     Object walls(officeWalls, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Image officeWallsImage = LoadImage("../assets/collision_layer.png");
+    Image appIcon = LoadImage("../assets/icon.png");
     Color* wallPixels = LoadImageColors(officeWallsImage);
+
+    SetWindowIcon(appIcon);
 
     std::vector<Object> printers = {
         Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
@@ -114,6 +119,9 @@ int main() {
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
         //camera.rotation += (deltaTime * 3);
+
+
+
 
         if (IsKeyPressed(KEY_F3)) {
             debug = !debug;
