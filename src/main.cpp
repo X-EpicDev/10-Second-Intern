@@ -66,7 +66,7 @@ int main() {
     tasks.emplace_back(std::list<Types>{Types::MACHINE});
 
     // Objects
-    Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9}, {0, 0, 10, 10}, {3, 0});
+    Player player(sheet, {16.0001, 32.0001, 15.9999, 31.9999}, {32, 32, 16, 32}, {0, 0, 8, 16}, Vector2{4, 15}, {0, 0, 10, 16}, {3, 10});
     Object overlay(overlayWall, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object walls(officeWalls, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
@@ -74,7 +74,7 @@ int main() {
     Color* wallPixels = LoadImageColors(officeWallsImage);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{0, 0, 32.9999, 15.9999}, Rectangle{8, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
         Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
         Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
         Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
@@ -82,17 +82,17 @@ int main() {
     objects.emplace(Types::PRINTER, printers);
 
     std::vector<Object> machines = {
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 4, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 8, 8 + 16, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8, 8 + 16 * 8, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 8, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
     };
     objects.emplace(Types::MACHINE, machines);
 
-    std::vector<Object> coffee = {
-        Object{sheet, Rectangle{0, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 2, 16, 16}, Rectangle{0, 0, 12, 6}, Vector2{2, 8}},
-    };
-    objects.emplace(Types::COFFEE, coffee);
+    // std::vector<Object> coffee = {
+    //     Object{sheet, Rectangle{0, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 2, 16, 16}, Rectangle{0, 0, 12, 6}, Vector2{2, 8}},
+    // };
+    // objects.emplace(Types::COFFEE, coffee);
 
     Camera2D camera;
     camera.rotation = 0.0f;
