@@ -98,6 +98,7 @@ int main() {
 
     std::vector<Object> water = {
         Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 9, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
     };
     objects.emplace(Types::WATER, water);
 
