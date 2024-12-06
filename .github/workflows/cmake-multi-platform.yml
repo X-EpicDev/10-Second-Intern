@@ -169,7 +169,7 @@ jobs:
     - name: Collect executable and assets
       run: |
         mkdir -p output
-        cp build/10SecondIntern.exe output/
+        cp ${{ env.PROJECT_BUILD_PATH }}\${{ env.PROJECT_NAME }}.exe ${{ env.PROJECT_RELEASE_PATH }}\${{ env.PROJECT_NAME }}.exe output/
         cp -r build/assets output/
         ls -alh output/
 
