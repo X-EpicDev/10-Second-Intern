@@ -26,7 +26,7 @@ int main() {
     bool debug = false;
 
     GameState gameState = WAITING;
-    float timer = 10;
+    float timer = 3;
     float cooldown = 2.5f;
     int score = 0;
     Task* currentTask = nullptr;
@@ -257,6 +257,7 @@ int main() {
         float posY = (GetScreenHeight() - newHeight) / 2;
 
         std::ostringstream stream;
+        std::string text;
         switch (gameState) {
             case WAITING:
                 DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
@@ -267,7 +268,9 @@ int main() {
             case FINISHED:
                 DrawText(gameOverText.c_str(), GetScreenWidth() / 2 - gameOverTextWidth / 2, GetScreenHeight() / 3, 40, WHITE);
                 DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
-                 //No break so it still renders score/timer for now
+
+                DrawText(("Score: " + std::to_string(score)).c_str(), GetScreenWidth() / 2 - MeasureText(("Score: " + std::to_string(score)).c_str(), 30), GetScreenHeight() / 3 + 48, 30, WHITE);
+                break;
             case PLAYING:
                 DrawText(("Score: " + std::to_string(score)).c_str(), 0, 0, 20, WHITE);
                 // Format to 1 decimal place
@@ -276,7 +279,7 @@ int main() {
                 if (currentTask == nullptr) {
                     stream.str("");
                     stream << std::fixed << std::setprecision(1) << std::round(cooldown * 10) / 10.0;
-                    std::string text = "Cooldown: " + stream.str();
+                    text = "Cooldown: " + stream.str();
                     DrawText(text.c_str(), GetScreenWidth() / 2 - MeasureText(text.c_str(), 40) / 2, GetScreenHeight() / 5 , 40, WHITE);
                 }
                 break;
