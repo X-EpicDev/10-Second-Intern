@@ -74,8 +74,8 @@ int main() {
     Object tableLayer(tableImage, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object walls(officeWalls, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
-    Image officeWallsImage = LoadImage("../assets/collision_layer.png");
-    Image appIcon = LoadImage("../assets/icon.png");
+    Image officeWallsImage = LoadImage("assets/collision_layer.png");
+    Image appIcon = LoadImage("assets/icon.png");
     Color* wallPixels = LoadImageColors(officeWallsImage);
 
     SetWindowIcon(appIcon);
