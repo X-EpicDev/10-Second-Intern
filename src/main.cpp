@@ -1,7 +1,5 @@
 #include <cmath>
 #include <iomanip>
-#include <iostream>
-#include <map>
 #include <sstream>
 #include <string>
 #include <unordered_map>
@@ -31,6 +29,7 @@ int main() {
 
     GameState gameState = WAITING;
     float timer = 10;
+    float cooldown = 2.5f;
     int score = 0;
     Task* currentTask;
 
@@ -106,11 +105,21 @@ int main() {
                 }
                 break;
             case PLAYING:
-                timer -= deltaTime;
-                if (timer <= 0) {
-                    timer = 0;
-                    gameState = FINISHED;
-                    break;
+                if (currentTask == nullptr) {
+                    cooldown -= deltaTime;
+                    if (cooldown <= 0) {
+                        currentTask = &tasks.at(std::rand() % tasks.size());
+                        currentTask->start();
+                        currentTask->pickRandom(objects);
+                        timer = 10;
+                    }
+                } else {
+                    timer -= deltaTime;
+                    if (timer <= 0) {
+                        timer = 0;
+                        gameState = FINISHED;
+                        break;
+                    }
                 }
 
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
@@ -135,11 +144,9 @@ int main() {
                 if (IsKeyPressed(KEY_E) && player.currentObject != nullptr) {
                     player.currentObject->interact();
                     if (currentTask->pickRandom(objects)) {
-                        std::cout << "AAAAAAA" << std::endl;
-                        currentTask = &tasks.at(std::rand() % tasks.size());
-                        currentTask->start();
-                        currentTask->pickRandom(objects);
-                        timer = 10;
+                        score++;
+                        currentTask = nullptr;
+                        cooldown = 1;
                     }
                 }
 
@@ -196,7 +203,7 @@ int main() {
 
         overlay.draw(debug);
 
-        if (player.currentObject != nullptr && currentTask->getNextObject() == player.currentObject) {
+        if (player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
             DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
         }
 
@@ -216,6 +223,12 @@ int main() {
                 // Format to 1 decimal place
                 stream << std::fixed << std::setprecision(1) << std::round(timer * 10) / 10.0;
                 DrawText(("Time: " + stream.str()).c_str(), 0, 16, 20, WHITE);
+                if (currentTask == nullptr) {
+                    stream.str("");
+                    stream << std::fixed << std::setprecision(1) << std::round(cooldown * 10) / 10.0;
+                    std::string text = "Cooldown: " + stream.str();
+                    DrawText(text.c_str(), GetScreenWidth() / 2 - MeasureText(text.c_str(), 40) / 2, GetScreenHeight() / 5 , 40, WHITE);
+                }
                 break;
         }
 
