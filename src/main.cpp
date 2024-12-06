@@ -69,7 +69,7 @@ int main() {
     tasks.emplace_back(std::list<Types>{Types::WATER, Types::STINKY, Types::WATER});
 
     // Objects
-    Player player(sheet, {16.0001, 32.0001, 15.9999, 31.9999}, {32, 32, 16, 32}, {0, 0, 8, 16}, Vector2{4, 15}, {0, 0, 10, 16}, {3, 10});
+    Player player(sheet, {16.0001, 32.0001, 15.9999, 31.9999}, {32, 32, 16, 32}, {0, 0, 8, 9}, Vector2{4, 22}, {0, 0, 10, 16}, {3, 10});
     Object overlay(overlayWall, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object tableLayer(tableImage, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object walls(officeWalls, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
@@ -81,39 +81,39 @@ int main() {
     SetWindowIcon(appIcon);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 3, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 5, 16 + 16 * 4, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 19, 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 23, 16 * 12, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 11, 16 * 11, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 3, 16 + 16, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 5, 16 + 16 * 4, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 19, 16, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 23, 16 * 12, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{16 * 11, 16 * 11, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
     };
     objects.emplace(Types::PRINTER, printers);
 
     std::vector<Object> machines = {
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 12, 16 - 8, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
-        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 18, 16 * 12, 16, 32}, Rectangle{0, 0, 8, 4}, Vector2{4, 12}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 12, 16 - 8, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
+        Machine{sheet, Rectangle{0, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 18, 16 * 12, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
     };
     objects.emplace(Types::MACHINE, machines);
 
     std::vector<Object> coffee = {
-        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{16 * 5, 16 * 2, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
-        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 20, 16, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
-        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 24, 16 * 12, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
-        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 4, 16 * 17, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{16 * 5, 16 * 2, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 20, 16, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 24, 16 * 12, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 4, 16 * 17, 16, 16}, Rectangle{0, 0, 24, 10}, Vector2{-5, 10}},
     };
     objects.emplace(Types::COFFEE, coffee);
 
     std::vector<Object> water = {
-        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 11, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
-        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 19, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
-        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 19, 16 * 12, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 11, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 19, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 19, 16 * 12, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
     };
     objects.emplace(Types::WATER, water);
 
     std::vector<Object> stinky = {
-        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 17, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 16}},
-        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 18, 16 * 17, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 16}},
+        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 17, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
+        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 18, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
     };
     objects.emplace(Types::STINKY, stinky);
 
