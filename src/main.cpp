@@ -60,8 +60,12 @@ int main() {
 
     // Tasks
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER}); // Do not list more than exists on the map or death happens
+    tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER, Types::PRINTER});
     tasks.emplace_back(std::list<Types>{Types::PRINTER});
     tasks.emplace_back(std::list<Types>{Types::MACHINE});
+    tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::MACHINE});
+    tasks.emplace_back(std::list<Types>{Types::WATER, Types::STINKY});
+    tasks.emplace_back(std::list<Types>{Types::WATER, Types::STINKY, Types::WATER});
 
     // Objects
     Player player(sheet, {16.0001, 32.0001, 15.9999, 31.9999}, {32, 32, 16, 32}, {0, 0, 8, 16}, Vector2{4, 15}, {0, 0, 10, 16}, {3, 10});
@@ -72,10 +76,10 @@ int main() {
     Color* wallPixels = LoadImageColors(officeWallsImage);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{0, 0, 32.9999, 15.9999}, Rectangle{8, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 16 + 16, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 16 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{32.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 16 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 2}, Vector2{4, 4}},
     };
     objects.emplace(Types::PRINTER, printers);
 
@@ -87,10 +91,20 @@ int main() {
     };
     objects.emplace(Types::MACHINE, machines);
 
-    // std::vector<Object> coffee = {
-    //     Object{sheet, Rectangle{0, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 2, 16, 16}, Rectangle{0, 0, 12, 6}, Vector2{2, 8}},
-    // };
-    // objects.emplace(Types::COFFEE, coffee);
+    std::vector<Object> coffee = {
+        Object{sheet, Rectangle{32.0001, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 14 + 16 * 2, 16, 16}, Rectangle{0, 0, 8, 6}, Vector2{4, 4}},
+    };
+    objects.emplace(Types::COFFEE, coffee);
+
+    std::vector<Object> water = {
+        Object{sheet, Rectangle{32.0001, 32.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 4, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 14}},
+    };
+    objects.emplace(Types::WATER, water);
+
+    std::vector<Object> stinky = {
+        Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 6, 16, 32}, Rectangle{0, 0, 12, 2}, Vector2{2, 16}},
+    };
+    objects.emplace(Types::STINKY, stinky);
 
     Camera2D camera;
     camera.rotation = 0.0f;
