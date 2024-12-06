@@ -123,12 +123,13 @@ jobs:
         build_type: [Release]
         c_compiler: [gcc]
         cpp_compiler: [g++]
+        
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Set up CMake
-      uses: actions/setup-cmake@v2
+      uses: cmake/setup-cmake@v3  # Corrected action for CMake setup
       with:
         cmake-version: '3.21.0'  # Specify the desired CMake version
 
@@ -151,7 +152,7 @@ jobs:
       run: |
         cd build
         mingw32-make  # Use mingw32-make to build the project
-
+        
     - name: Collect executable and assets
       run: |
         mkdir -p output
