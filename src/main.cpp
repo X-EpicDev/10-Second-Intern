@@ -204,7 +204,6 @@ int main() {
         DrawCircle(100, 75, 12.5, RED);
 
         floor.draw(debug);
-        walls.draw(debug);
 
         for (auto& objectKey : objects) {
             for (Object& object : objectKey.second) {
@@ -228,7 +227,7 @@ int main() {
         }
 
         player.draw(debug);
-
+        walls.draw(debug);
         overlay.draw(debug);
 
         if (player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
