@@ -57,7 +57,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts
+        name: build-artifacts-linux
         path: output/
 
     - name: Test
@@ -110,7 +110,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts
+        name: build-artifacts-macos
         path: output/
 
     - name: Test
@@ -124,7 +124,7 @@ jobs:
 
     env:
       PROJECT_NAME: 10SecondIntern
-      PROJECT_BUILD_PATH: "10SecondIntern\\projects\\VS2022\\build\\${{ github.event.repository.name }}\\bin\\x64\\Release"
+      PROJECT_BUILD_PATH: "10SecondIntern\\projects\\VS2022\\build\\10SecondIntern\\bin\\x64\\Release"
       PROJECT_RELEASE_PATH: 10SecondIntern_dev_win_x64
       PROJECT_RESOURCES_PATH: resources
 
