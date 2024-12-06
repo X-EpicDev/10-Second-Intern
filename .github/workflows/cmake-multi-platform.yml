@@ -137,30 +137,26 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+      run:
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
 
     - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+      run: cmake --build .
 
-    - name: Collect files
-      shell: bash
+    - name: Collect executable and assets
       run: |
-        dir ${{ steps.strings.outputs.build-output-dir }}
-        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
-        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME.exe ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
-        cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
-        dir ${{ steps.strings.outputs.build-output-dir }}/package
-
-    - name: Upload artifact
+        mkdir -p output
+        cp build/10SecondIntern.exe output/
+        cp -r build/assets output/
+        ls -alh output/
+  
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifact-windows-${{ matrix.build_type }}
-        path: ${{ steps.strings.outputs.build-output-dir }}/package
+        name: build-artifacts-windows
+        path: output/
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
