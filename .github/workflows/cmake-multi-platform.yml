@@ -1,5 +1,8 @@
 name: CMake on multiple platforms
 
+permissions:
+  contents: read
+
 on:
   push:
     branches: [ "main" ]
@@ -120,9 +123,9 @@ jobs:
     runs-on: windows-latest
 
     env:
-      PROJECT_NAME: ${{ github.event.repository.name }}
-      PROJECT_BUILD_PATH: "${{ github.event.repository.name }}\\projects\\VS2022\\build\\${{ github.event.repository.name }}\\bin\\x64\\Release"
-      PROJECT_RELEASE_PATH: ${{ github.event.repository.name }}_dev_win_x64
+      PROJECT_NAME: 10SecondIntern
+      PROJECT_BUILD_PATH: "10SecondIntern\\projects\\VS2022\\build\\${{ github.event.repository.name }}\\bin\\x64\\Release"
+      PROJECT_RELEASE_PATH: 10SecondIntern_dev_win_x64
       PROJECT_RESOURCES_PATH: resources
 
     steps:
