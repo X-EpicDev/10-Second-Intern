@@ -19,7 +19,7 @@ private:
         return false;
     }
 
-    static float ResolveAxisCollision(Rectangle* rect, const Color* pixels, const int textureWidth, const int textureHeight, const float delta, const char axis) {
+    static float ResolveAxisCollision(Rectangle* rect, const Color* pixels, int textureWidth, int textureHeight, float delta, char axis) {
         if (delta == 0.0f) return 0.0f;
 
         const float step = (delta > 0) ? 1.0f : -1.0f;
@@ -81,7 +81,7 @@ public:
 
     void draw(bool debug) {
         if (debug) {
-            DrawRectanglePro(this->interactBox, (Vector2){0, 0}, 0, BLUE);
+            DrawRectanglePro(this->interactBox, Vector2{0, 0}, 0, BLUE);
         }
         Object::draw(debug);
     }

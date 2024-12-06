@@ -18,9 +18,9 @@ public:
 
     void draw(bool debug) {
         if (debug) {
-            DrawRectanglePro(this->hitbox, (Vector2){0, 0}, 0, YELLOW);
+            DrawRectanglePro(this->hitbox, Vector2{0, 0}, 0, YELLOW);
         }
-        DrawTexturePro(sheet, this->textureArea, this->object, (Vector2){0, 0}, 0, WHITE);
+        DrawTexturePro(sheet, this->textureArea, this->object, Vector2{0, 0}, 0, WHITE);
     }
 
     virtual void interact() {};
