@@ -45,12 +45,12 @@ int main() {
     SetTextureFilter(target.texture, TEXTURE_FILTER_BILINEAR);
 
     // Load textures
-    Texture2D sheet = LoadTexture("../assets/sheet.png");
-    Texture2D overlayWall = LoadTexture("../assets/overlay_layer.png");
-    Texture2D officeWalls = LoadTexture("../assets/collision_layer.png");
-    Texture2D officeFloor = LoadTexture("../assets/floor_layer.png");
-    Texture2D tableImage = LoadTexture("../assets/table_layer.png");
-    Texture2D startImage = LoadTexture("../assets/start.png");
+    Texture2D sheet = LoadTexture("assets/sheet.png");
+    Texture2D overlayWall = LoadTexture("assets/overlay_layer.png");
+    Texture2D officeWalls = LoadTexture("assets/collision_layer.png");
+    Texture2D officeFloor = LoadTexture("assets/floor_layer.png");
+    Texture2D tableImage = LoadTexture("assets/table_layer.png");
+    Texture2D startImage = LoadTexture("assets/start.png");
 
     // Text
     std::string startText = "Press SPACE or ENTER to begin";
