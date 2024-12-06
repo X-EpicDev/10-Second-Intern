@@ -145,11 +145,12 @@ jobs:
     - name: Build CMake
       run: |
         cd build
-        cmake --build .
+        cmake --build . --config Release
 
     - name: Collect executable and assets
       run: |
         mkdir -p output
+        dir build
         cp build/10SecondIntern.exe output/
         cp -r build/assets output/
         ls -alh output/
