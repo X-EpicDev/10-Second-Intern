@@ -130,11 +130,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up CMake
-      uses: actions/setup-cmake@v2
-      with:
-        cmake-version: '3.21'
-
     - name: Set reusable strings
       id: strings
       shell: bash
