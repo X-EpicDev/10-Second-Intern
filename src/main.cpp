@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Printer.h"
 #include "raylib.h"
+#include "raymath.h"
 #include "Task.h"
 
 enum GameState {
@@ -31,7 +32,7 @@ int main() {
     float timer = 10;
     float cooldown = 2.5f;
     int score = 0;
-    Task* currentTask;
+    Task* currentTask = nullptr;
 
     std::vector<Task> tasks;
     std::unordered_map<Types, std::vector<Object>> objects;
@@ -141,7 +142,7 @@ int main() {
                 if (IsKeyPressed(KEY_Q)) {
                     timer = 10;
                 }
-                if (IsKeyPressed(KEY_E) && player.currentObject != nullptr) {
+                if (IsKeyPressed(KEY_E) && player.currentObject != nullptr && currentTask->getNextObject() == player.currentObject) {
                     player.currentObject->interact();
                     if (currentTask->pickRandom(objects)) {
                         score++;
