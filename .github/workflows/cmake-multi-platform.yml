@@ -169,6 +169,7 @@ jobs:
     - name: Collect executable dynamically and print directory
       run: |
         mkdir -p output
+        dir ${{ env.PROJECT_NAME }}\projects\VS2022\build
         for /R ${{ env.PROJECT_NAME }}\projects\VS2022\build %%G in (10SecondIntern.exe) do (
           echo Found executable in: %%~dpG
           copy "%%G" output\
