@@ -54,7 +54,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts-linux
+        name: build-artifacts
         path: output/
 
     - name: Test
@@ -107,7 +107,7 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts-macos
+        name: build-artifacts
         path: output/
 
     - name: Test
@@ -116,58 +116,55 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
-  
+
     strategy:
       fail-fast: false
       matrix:
         build_type: [Release]
         c_compiler: [gcc]
         cpp_compiler: [g++]
-  
     steps:
-    - uses: actions/checkout@v4
-  
-    - name: Install MinGW-w64
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up CMake
+      uses: actions/setup-cmake@v2
+      with:
+        cmake-version: '3.21.0'  # Specify the desired CMake version
+
+    - name: Install MinGW (GCC/G++)
       run: |
-        choco install mingw --version 8.1.0  # Install MinGW-w64 (GCC)
-        set PATH=C:\tools\mingw\bin;%PATH%  # Update the PATH to include MinGW-w64
-  
-    - name: Install CMake
-      run: choco install cmake
-  
-    - name: Set reusable strings
-      id: strings
-      shell: bash
+        choco install mingw -y  # Install MinGW for GCC/G++ on Windows
+        refreshenv  # Ensure the environment variables are updated
+
+    - name: Install Raylib dependencies
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-  
-    - name: Configure CMake
+        choco install sdl2 glfw freetype libsndfile -y  # Install Raylib dependencies using Chocolatey
+
+    - name: Create build directory
       run: |
-        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} \
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} \
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-        -S ${{ github.workspace }} \
-        -G "MinGW Makefiles"  # Use MinGW Makefiles generator
-  
-    - name: Build
+        mkdir build
+        cd build
+        cmake .. -G "MinGW Makefiles"  # Use MinGW Makefiles generator for CMake
+
+    - name: Build the project
       run: |
-        cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}  # Build the project
-  
+        cd build
+        mingw32-make  # Use mingw32-make to build the project
+
     - name: Collect executable and assets
       run: |
         mkdir -p output
         cp build/10SecondIntern.exe output/
         cp -r build/assets output/
         ls -alh output/
-  
+
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts-windows
+        name: build-artifacts
         path: output/
-  
+
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
       run: ctest --build-config ${{ matrix.build_type }}
-  
