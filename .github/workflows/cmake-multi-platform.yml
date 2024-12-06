@@ -133,6 +133,7 @@ jobs:
         choco install mingw -y  # Install MinGW for GCC/G++ on Windows
         echo "Adding MinGW to PATH"
         setx PATH "%PATH%;C:\ProgramData\mingw64\mingw32\bin;C:\ProgramData\mingw64\mingw64\bin"  # Manually add MinGW to PATH
+        refreshenv
 
     - name: Wait for environment to refresh
       run: |
