@@ -166,20 +166,24 @@ jobs:
         cd ../..
       shell: cmd
 
-    - name: Check Build Directories
-      run: |
-        echo "Listing directories after build..."
-        dir ${{ env.PROJECT_NAME }}/projects/VS2022/build /s
-        echo "Checking bin directory..."
-        dir ${{ env.PROJECT_NAME }}/projects/VS2022/build/10SecondIntern/bin /s
-      shell: cmd
-
-    - name: Collect executable and assets
+    - name: Collect executable dynamically and print directory
       run: |
         mkdir -p output
-        cp ${{ env.PROJECT_BUILD_PATH }}\${{ env.PROJECT_NAME }}.exe output/
+        for /R ${{ env.PROJECT_NAME }}\projects\VS2022\build %%G in (10SecondIntern.exe) do (
+          echo Found executable in: %%~dpG
+          copy "%%G" output\
+        )
         cp -r build/assets output/
-        ls -alh output/
+        dir output
+      shell: cmd
+
+
+    # - name: Collect executable and assets
+    #   run: |
+    #     mkdir -p output
+    #     cp ${{ env.PROJECT_BUILD_PATH }}\${{ env.PROJECT_NAME }}.exe output/
+    #     cp -r build/assets output/
+    #     ls -alh output/
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
