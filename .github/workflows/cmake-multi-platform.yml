@@ -143,10 +143,10 @@ jobs:
         choco install cmake -y  # Install CMake using Chocolatey
       
     - name: Install GLFW
-      run: choco install glfw --pre -y
+      run: choco install glfw -y
       
     - name: Install Freetype
-      run: choco install freetype --pre -y
+      run: choco install freetype -y
       
     - name: Install Libsndfile
       run: choco install libsndfile -y
