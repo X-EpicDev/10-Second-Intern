@@ -130,8 +130,13 @@ jobs:
 
     - name: Install MinGW (GCC/G++)
       run: |
-        choco install mingw -y  # Install MinGW for GCC/G++ on Windows
-        refreshenv  # Refresh the environment to ensure PATH is updated
+        choco install mingw -y
+        echo "Adding MinGW to PATH"
+        setx PATH "%PATH%;C:\ProgramData\mingw64\mingw32\bin;C:\ProgramData\mingw64\mingw64\bin"
+    
+    - name: Wait for environment to refresh
+      run: |
+        sleep 10
 
     - name: Install CMake
       run: |
