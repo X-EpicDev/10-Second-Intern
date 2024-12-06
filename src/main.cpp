@@ -49,6 +49,7 @@ int main() {
     Texture2D overlayWall = LoadTexture("../assets/overlay_layer.png");
     Texture2D officeWalls = LoadTexture("../assets/collision_layer.png");
     Texture2D officeFloor = LoadTexture("../assets/floor_layer.png");
+    Texture2D startImage = LoadTexture("../assets/start.png");
 
     // Text
     std::string startText = "Press SPACE or ENTER to begin";
@@ -59,6 +60,7 @@ int main() {
 
     // Tasks
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER}); // Do not list more than exists on the map or death happens
+    tasks.emplace_back(std::list<Types>{Types::PRINTER});
     tasks.emplace_back(std::list<Types>{Types::MACHINE});
 
     // Objects
@@ -241,10 +243,27 @@ int main() {
 
         EndMode2D();
 
+        float scaleX = (float)GetScreenWidth() / (float)startImage.width;
+        float scaleY = (float)GetScreenHeight() / (float)startImage.height;
+
+        // Use the smaller scaling factor to maintain aspect ratio
+        float scale = (scaleX < scaleY) ? scaleX : scaleY;
+
+        // Calculate the new dimensions based on the scale factor
+        int newWidth = (int)(startImage.width * scale);
+        int newHeight = (int)(startImage.height * scale);
+
+        // Calculate position to center the image
+        float posX = (GetScreenWidth() - newWidth) / 2;
+        float posY = (GetScreenHeight() - newHeight) / 2;
+
         std::ostringstream stream;
         switch (gameState) {
             case WAITING:
                 DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
+
+                DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), (Color){0, 191, 255, 255});
+                DrawTextureEx(startImage, (Vector2){ posX, posY }, 0.0f, scale, WHITE);
                 break;
             case FINISHED:
                 DrawText(gameOverText.c_str(), GetScreenWidth() / 2 - gameOverTextWidth / 2, GetScreenHeight() / 3, 40, WHITE);
