@@ -213,7 +213,7 @@ int main() {
             DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
         }
 
-        { // TODO: AAAA TRIANGLE
+        { // TODO:NE THE LINE
             Vector2 targetPosition = {0, 0};  // Target position
             DrawLineV({player.getX(), player.getY()}, targetPosition, RED);
             DrawLineEx({player.getX(), player.getY()}, targetPosition,5, RED);
