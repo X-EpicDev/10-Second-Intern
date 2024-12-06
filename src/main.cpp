@@ -36,7 +36,7 @@ int main() {
 
     // Enable config flags for resizable window and vertical synchro
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(windowWidth, windowHeight, "Resize Window");
+    InitWindow(windowWidth, windowHeight, "10 Second Intern");
     SetWindowMinSize(320, 240);
 
     SetTargetFPS(60);
