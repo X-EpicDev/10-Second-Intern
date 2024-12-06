@@ -37,22 +37,21 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
-      run: >
-        cmake -B ${{ steps.strings.outputs.build-output-dir }}
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-        -S ${{ github.workspace }}
+      run: |
+        mkdir -p build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
 
-    - name: Build
-      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+    - name: Build CMake
+      run: |
+        cd build
+        cmake --build . --config Release
 
     - name: Collect executable and assets
       run: |
         mkdir -p output
         cp build/10SecondIntern output/
         cp -r build/assets output/
-        ls -alh output/
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
