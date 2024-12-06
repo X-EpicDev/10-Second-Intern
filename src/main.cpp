@@ -213,10 +213,12 @@ int main() {
             DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
         }
 
-        { // TODO:NE THE LINE
-            Vector2 targetPosition = {0, 0};  // Target position
-            DrawLineV({player.getX(), player.getY()}, targetPosition, RED);
-            DrawLineEx({player.getX(), player.getY()}, targetPosition,5, RED);
+        {
+            if(currentTask != nullptr) {
+                Vector2 targetPosition = {currentTask->getNextObject()->getX(), currentTask->getNextObject()->getY()};  // Target position
+                DrawLineEx({player.getX(), player.getY()}, targetPosition,5, RED);
+            }
+
 
         }
 
