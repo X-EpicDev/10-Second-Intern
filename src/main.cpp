@@ -26,7 +26,7 @@ int main() {
     bool debug = false;
 
     GameState gameState = WAITING;
-    float timer = 3;
+    float timer = 10;
     float cooldown = 2.5f;
     int score = 0;
     Task* currentTask = nullptr;
@@ -116,6 +116,14 @@ int main() {
         Object{sheet, Rectangle{48.0001, 0.0001, 15.9999, 31.9999}, Rectangle{8 + 16 * 18, 16 * 17, 16, 32}, Rectangle{0, 0, 8, 10}, Vector2{4, 16}},
     };
     objects.emplace(Types::STINKY, stinky);
+
+    std::vector<Object> tables = {
+        Object{sheet, Rectangle{0, 0, 0, 0}, Rectangle{8 + 16 * 2, 16 * 5, 32, 16}, Rectangle{0, 0, 32, 10}, Vector2{0, 13}},
+        Object{sheet, Rectangle{0, 0, 0, 0}, Rectangle{8 + 16 * 2, 16 * 8, 32, 16}, Rectangle{0, 0, 32, 10}, Vector2{0, 13}},
+        Object{sheet, Rectangle{0, 0, 0, 0}, Rectangle{8 + 16 * 4, 16 * 8, 32, 16}, Rectangle{0, 0, 32, 10}, Vector2{0, 13}},
+        Object{sheet, Rectangle{0, 0, 0, 0}, Rectangle{8 + 16 * 12, 16 * 11, 32, 16}, Rectangle{0, 0, 32, 10}, Vector2{0, 13}},
+    };
+    objects.emplace(Types::BLANK_TABLE, tables);
 
     Camera2D camera;
     camera.rotation = 0.0f;

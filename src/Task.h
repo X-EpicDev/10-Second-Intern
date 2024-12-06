@@ -14,7 +14,8 @@ enum class Types {
     MACHINE,
     COFFEE,
     WATER,
-    STINKY
+    STINKY,
+    BLANK_TABLE
 };
 
 class Task {
