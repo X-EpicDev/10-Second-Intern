@@ -219,8 +219,8 @@ int main() {
             }
         }
 
-        player.draw(debug);
         walls.draw(debug);
+        player.draw(debug);
         overlay.draw(debug);
 
         if (player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
