@@ -177,7 +177,7 @@ int main() {
                 if (IsKeyPressed(KEY_Q)) {
                     timer = 10;
                 }
-                if (IsKeyPressed(KEY_E) && player.currentObject != nullptr && currentTask->getNextObject() == player.currentObject) {
+                if (IsKeyPressed(KEY_E) && player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
                     player.currentObject->interact();
                     if (currentTask->pickRandom(objects)) {
                         score++;
