@@ -123,10 +123,6 @@ int main() {
 
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
-        //camera.rotation += (deltaTime * 3);
-
-
-
 
         if (IsKeyPressed(KEY_F3)) {
             debug = !debug;
@@ -188,9 +184,6 @@ int main() {
                     player.currentObject = nullptr;
                 }
 
-                if (IsKeyPressed(KEY_Q)) {
-                    timer = 10;
-                }
                 if (IsKeyPressed(KEY_E) && player.currentObject != nullptr && currentTask != nullptr && currentTask->getNextObject() == player.currentObject) {
                     player.currentObject->interact();
                     if (currentTask->pickRandom(objects)) {
