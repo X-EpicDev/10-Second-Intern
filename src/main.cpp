@@ -19,10 +19,6 @@ enum GameState {
     FINISHED
 };
 
-void ArrowControl(Vector2 point1, Vector2 point2, Vector2 point3) {
-    DrawTriangle(point1, point2, point3, GREEN);
-}
-
 int main() {
     const int windowWidth = 1080;
     const int windowHeight = 720;
@@ -98,9 +94,6 @@ int main() {
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
 
-    bool arrow_appear = false;
-    float tempTimer = 0.0f;
-
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
         //camera.rotation += (deltaTime * 3);
@@ -112,7 +105,6 @@ int main() {
         // Update
         bool found = false;
         Vector2 beforePos;
-        Vector2 newPos;
         switch (gameState) {
             case WAITING:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
@@ -211,21 +203,6 @@ int main() {
             }
         }
 
-        if (CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox()) && IsKeyPressed(KEY_E) && arrow_appear == false) {
-
-            //insert a minigame function here
-            arrow_appear = true;
-            tempTimer = timer;
-        }
-
-        if(arrow_appear == true && CheckCollisionCircleRec((Vector2){100, 75}, 12.5, player.getHitbox())) {
-            ArrowControl({(player.getXOffset() * 2) + player.getX(), player.getYOffset() + player.getY() - 10}, {((player.getXOffset() * 2) + 10) + player.getX(), player.getYOffset() + player.getY() - 20}, {((player.getXOffset() * 2) - 10) + player.getX(), player.getYOffset() + player.getY() - 20});
-
-            if (timer <= tempTimer - 3) {
-                arrow_appear = false;
-            }
-        }
-
         player.draw(debug);
         walls.draw(debug);
         overlay.draw(debug);
@@ -274,10 +251,6 @@ int main() {
                 DrawText(startText.c_str(), GetScreenWidth() / 2 - startTextWidth / 2, GetScreenHeight() / 5 * 3.5f, 20, WHITE);
                  //No break so it still renders score/timer for now
             case PLAYING:
-
-
-
-
                 DrawText(("Score: " + std::to_string(score)).c_str(), 0, 0, 20, WHITE);
                 // Format to 1 decimal place
                 stream << std::fixed << std::setprecision(1) << std::round(timer * 10) / 10.0;
