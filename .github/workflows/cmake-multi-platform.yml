@@ -74,11 +74,23 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Collect files
+    - name: Collect executable and assets
       shell: bash
       run: |
         mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
-        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
+        # For Linux or macOS, the executable may not have an extension
+        if [[ "$RUNNER_OS" == "Linux" || "$RUNNER_OS" == "macOS" ]]; then
+          EXECUTABLE_NAME=$(find ${{ steps.strings.outputs.build-output-dir }} -type f -executable -name "${{ github.event.repository.name }}" -print -quit)
+        else
+          EXECUTABLE_NAME="${{ steps.strings.outputs.build-output-dir }}\\${{ github.event.repository.name }}.exe"
+        fi
+
+        # Copy the executable and assets
+        if [[ -f "$EXECUTABLE_NAME" ]]; then
+          cp "$EXECUTABLE_NAME" ${{ steps.strings.outputs.build-output-dir }}/package/
+        else
+          echo "Executable not found!"
+        fi
         cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
 
     - name: Upload artifact
