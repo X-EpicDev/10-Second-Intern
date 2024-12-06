@@ -49,6 +49,7 @@ int main() {
     Texture2D overlayWall = LoadTexture("../assets/overlay_layer.png");
     Texture2D officeWalls = LoadTexture("../assets/collision_layer.png");
     Texture2D officeFloor = LoadTexture("../assets/floor_layer.png");
+    Texture2D tableImage = LoadTexture("../assets/table_layer.png");
     Texture2D startImage = LoadTexture("../assets/start.png");
 
     // Text
@@ -70,6 +71,7 @@ int main() {
     // Objects
     Player player(sheet, {16.0001, 32.0001, 15.9999, 31.9999}, {32, 32, 16, 32}, {0, 0, 8, 16}, Vector2{4, 15}, {0, 0, 10, 16}, {3, 10});
     Object overlay(overlayWall, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
+    Object tableLayer(tableImage, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object walls(officeWalls, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
     Image officeWallsImage = LoadImage("../assets/collision_layer.png");
@@ -213,6 +215,7 @@ int main() {
         DrawCircle(100, 75, 12.5, RED);
 
         floor.draw(debug);
+        tableLayer.draw(debug);
 
         for (auto& objectKey : objects) {
             for (Object& object : objectKey.second) {
