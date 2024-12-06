@@ -1,14 +1,17 @@
 #ifndef TASK_H
 #define TASK_H
 
+#include <iostream>
 #include <list>
 #include <vector>
 #include <random>
+#include <valarray>
 
 #include "Object.h"
 
-enum Types {
-    PRINTER
+enum class Types {
+    PRINTER,
+    MACHINE
 };
 
 class Task {
@@ -36,7 +39,7 @@ public:
         auto typeIt = types.begin();
         std::advance(typeIt, position);
 
-        auto it = objects.find(*typeIt);
+        const auto it = objects.find(*typeIt);
         if (it == objects.end() || it->second.empty()) {
             throw std::runtime_error("No objects found for the specified type.");
         }

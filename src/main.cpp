@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Machine.h"
 #include "Object.h"
 #include "Player.h"
 #include "Printer.h"
@@ -61,7 +62,8 @@ int main() {
     int gameOverTextWidth = MeasureText(gameOverText.c_str(), 40);
 
     // Tasks
-    tasks.emplace_back(std::list<Types>{PRINTER, PRINTER});
+    tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER}); // Do not list more than exists on the map or death happens
+    tasks.emplace_back(std::list<Types>{Types::MACHINE});
 
     // Objects
     Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9}, {0, 0, 10, 10}, {3, 0});
@@ -72,12 +74,20 @@ int main() {
     Color* wallPixels = LoadImageColors(officeWallsImage);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 24, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{56, 24, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 56, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{56, 56, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
     };
-    objects.emplace(PRINTER, printers);
+    objects.emplace(Types::PRINTER, printers);
+
+    std::vector<Object> machines = {
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 4, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+    };
+    objects.emplace(Types::MACHINE, machines);
 
     Camera2D camera;
     camera.rotation = 0.0f;
