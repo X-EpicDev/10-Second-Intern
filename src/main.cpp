@@ -233,7 +233,7 @@ int main() {
 
         if(currentTask != nullptr) {
             Vector2 targetPosition = {currentTask->getNextObject()->getX() + (currentTask->getNextObject()->getWidth() / 2), currentTask->getNextObject()->getY() + (currentTask->getNextObject()->getHeight() / 2)};  // Target position
-            DrawLineEx({player.getX(), player.getY()}, targetPosition,5, RED);
+            DrawLineEx({player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 4)}, targetPosition,5, RED);
         }
 
         EndMode2D();
