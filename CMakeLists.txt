@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-conversion")
-
 # d IF (WIN32)
 # d     set(CMAKE_EXE_LINKER_FLAGS "-static")
 # d ENDIF()
