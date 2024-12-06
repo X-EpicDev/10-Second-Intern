@@ -74,23 +74,23 @@ int main() {
     Color* wallPixels = LoadImageColors(officeWallsImage);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8 + 16 * 3, 8 + 16 * 3, 16, 16}, Rectangle{0, 0, 8, 12}, Vector2{4, 4}},
     };
     objects.emplace(Types::PRINTER, printers);
 
     std::vector<Object> machines = {
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 4, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 4, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
+        Machine{sheet, Rectangle{16.0001, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 8, 8 + 16 * 8, 16, 16}, Rectangle{0, 0, 8, 8}, Vector2{4, 8}},
     };
     objects.emplace(Types::MACHINE, machines);
 
     std::vector<Object> coffee = {
-        Object{sheet, Rectangle{0, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 2, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Object{sheet, Rectangle{0, 16.0001, 15.9999, 15.9999}, Rectangle{8 + 16 * 7, 8 + 16 * 2, 16, 16}, Rectangle{0, 0, 12, 6}, Vector2{2, 8}},
     };
     objects.emplace(Types::COFFEE, coffee);
 
@@ -111,6 +111,7 @@ int main() {
 
         // Update
         bool found = false;
+        Vector2 beforePos;
         switch (gameState) {
             case WAITING:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
@@ -138,10 +139,16 @@ int main() {
                     }
                 }
 
+                beforePos.x = player.getX();
+                beforePos.y = player.getY();
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
 
                 for (auto& objectKey : objects) {
                     for (Object& object : objectKey.second) {
+                        if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
+                            player.setX(beforePos.x);
+                            player.setY(beforePos.y);
+                        }
                         if (CheckCollisionRecs(object.getHitbox(), player.getInteractionHitbox())) {
                             player.currentObject = &object;
                             found = true;
