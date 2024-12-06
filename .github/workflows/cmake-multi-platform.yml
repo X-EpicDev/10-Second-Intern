@@ -97,18 +97,18 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Collect files
-      shell: bash
+    - name: Collect executable and assets
       run: |
-        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
-        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
-        cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
+        mkdir -p output
+        cp build/10SecondIntern output/
+        cp -r build/assets output/
+        ls -alh output/
 
-    - name: Upload artifact
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifact-macos-${{ matrix.build_type }}
-        path: ${{ steps.strings.outputs.build-output-dir }}/package
+        name: build-artifacts
+        path: output/
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
@@ -148,18 +148,18 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Collect files
-      shell: bash
+    - name: Collect executable and assets
       run: |
-        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
-        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME.exe ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
-        cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
+        mkdir -p output
+        cp build/10SecondIntern.exe output/
+        cp -r build/assets output/
+        ls -alh output/
 
-    - name: Upload artifact
+    - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifact-windows-${{ matrix.build_type }}
-        path: ${{ steps.strings.outputs.build-output-dir }}/package
+        name: build-artifacts
+        path: output/
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
