@@ -1,12 +1,17 @@
 #include <cmath>
 #include <iomanip>
+#include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "Object.h"
 #include "Player.h"
+#include "Printer.h"
 #include "raylib.h"
+#include "Task.h"
 
 enum GameState {
     WAITING,
@@ -27,8 +32,10 @@ int main() {
     GameState gameState = WAITING;
     float timer = 10;
     int score = 0;
+    Task* currentTask;
 
-    std::vector<Object> objects;
+    std::vector<Task> tasks;
+    std::unordered_map<Types, std::vector<Object>> objects;
 
     // Enable config flags for resizable window and vertical synchro
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
@@ -52,13 +59,23 @@ int main() {
     std::string gameOverText = "Game Over";
     int gameOverTextWidth = MeasureText(gameOverText.c_str(), 40);
 
+    // Tasks
+    tasks.emplace_back(std::list<Types>{PRINTER, PRINTER});
+
     // Objects
     Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9}, {0, 0, 10, 10}, {3, 0});
     Object walls(officeWalls, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
     Object floor(officeFloor, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
     Image officeWallsImage = LoadImage("../assets/office_walls.png");
     Color* wallPixels = LoadImageColors(officeWallsImage);
-    objects.emplace_back(sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{16, 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0});
+
+    std::vector<Object> printers = {
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{16, 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{64, 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{16, 48, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{64, 48, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+    };
+    objects.emplace(PRINTER, printers);
 
     Camera2D camera;
     camera.rotation = 0.0f;
@@ -81,6 +98,9 @@ int main() {
             case WAITING:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
                     gameState = PLAYING;
+                    currentTask = &tasks.at(std::rand() % tasks.size());
+                    currentTask->start();
+                    currentTask->pickRandom(objects);
                 }
                 break;
             case PLAYING:
@@ -93,11 +113,13 @@ int main() {
 
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
 
-                for (Object object : objects) {
-                    if (CheckCollisionRecs(object.getHitbox(), player.getInteractionHitbox())) {
-                        player.currentObject = &object;
-                        found = true;
-                        break;
+                for (auto& objectKey : objects) {
+                    for (Object& object : objectKey.second) {
+                        if (CheckCollisionRecs(object.getHitbox(), player.getInteractionHitbox())) {
+                            player.currentObject = &object;
+                            found = true;
+                            break;
+                        }
                     }
                 }
 
@@ -110,6 +132,13 @@ int main() {
                 }
                 if (IsKeyPressed(KEY_E) && player.currentObject != nullptr) {
                     player.currentObject->interact();
+                    if (currentTask->pickRandom(objects)) {
+                        std::cout << "AAAAAAA" << std::endl;
+                        currentTask = &tasks.at(std::rand() % tasks.size());
+                        currentTask->start();
+                        currentTask->pickRandom(objects);
+                        timer = 10;
+                    }
                 }
 
                 break;
@@ -138,8 +167,10 @@ int main() {
         floor.draw(debug);
         walls.draw(debug);
 
-        for (Object object : objects) {
-            object.draw(debug);
+        for (auto& objectKey : objects) {
+            for (Object& object : objectKey.second) {
+                object.draw(debug);
+            }
         }
 
         DrawCircle(100, 75, 12.5, RED);
@@ -160,7 +191,7 @@ int main() {
 
         player.draw(debug);
 
-        if (player.currentObject != nullptr) {
+        if (player.currentObject != nullptr && currentTask->getNextObject() == player.currentObject) {
             DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
         }
 
