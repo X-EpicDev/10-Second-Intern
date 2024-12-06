@@ -214,31 +214,10 @@ int main() {
         }
 
         { // TODO: AAAA TRIANGLE
-            Vector2 targetPosition = { 600, 400 };
+            Vector2 targetPosition = {0, 0};  // Target position
+            DrawLineV({player.getX(), player.getY()}, targetPosition, RED);
+            DrawLineEx({player.getX(), player.getY()}, targetPosition,5, RED);
 
-            float triangleSize = 30.0f;
-            Vector2 trianglePosition = { player.getX(), player.getY() - 50 };
-
-            Vector2 direction = { targetPosition.x - player.getX(), targetPosition.y - player.getY() };
-            float angle = atan2(direction.y, direction.x); // Calculate the angle to the target
-
-            // Define the triangle points (relative to the player)
-            Vector2 point1 = { trianglePosition.x - triangleSize / 2, trianglePosition.y + triangleSize / 2 };
-            Vector2 point2 = { trianglePosition.x + triangleSize / 2, trianglePosition.y + triangleSize / 2 };
-            Vector2 point3 = { trianglePosition.x, trianglePosition.y - triangleSize };
-
-            // Apply rotation to the triangle points based on the angle
-            Matrix rotationMatrix = MatrixRotate({0,0,0}, angle);  // Create a rotation matrix
-            point1 = Vector2Transform(point1, rotationMatrix);
-            point2 = Vector2Transform(point2, rotationMatrix);
-            point3 = Vector2Transform(point3, rotationMatrix);
-
-            // Adjust the triangle's position based on the player
-            point1 = Vector2Add(point1, {player.getX(), player.getY()});
-            point2 = Vector2Add(point2, {player.getX(), player.getY()});
-            point3 = Vector2Add(point3, {player.getX(), player.getY()});
-
-            // DrawTriangle(point1, point2, point3, GREEN);
         }
 
         EndMode2D();
