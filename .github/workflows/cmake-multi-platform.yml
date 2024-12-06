@@ -124,7 +124,7 @@ jobs:
 
     env:
       PROJECT_NAME: 10SecondIntern
-      PROJECT_BUILD_PATH: "10SecondIntern\\projects\\VS2022\\build\\10SecondIntern\\bin\\x64\\Release"
+      PROJECT_BUILD_PATH: "projects\\VS2022\\build\\10SecondIntern\\bin\\x64\\Release"
       PROJECT_RELEASE_PATH: 10SecondIntern_dev_win_x64
       PROJECT_RESOURCES_PATH: resources
 
