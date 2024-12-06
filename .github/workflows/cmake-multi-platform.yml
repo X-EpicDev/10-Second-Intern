@@ -130,10 +130,10 @@ jobs:
 
     - name: Install MinGW (GCC/G++)
       run: |
-        choco install mingw -y
+        choco install mingw -y  # Install MinGW for GCC/G++ on Windows
         echo "Adding MinGW to PATH"
-        setx PATH "%PATH%;C:\ProgramData\mingw64\mingw32\bin;C:\ProgramData\mingw64\mingw64\bin"
-    
+        setx PATH "%PATH%;C:\ProgramData\mingw64\mingw32\bin;C:\ProgramData\mingw64\mingw64\bin"  # Manually add MinGW to PATH
+
     - name: Wait for environment to refresh
       run: |
         sleep 10
@@ -144,7 +144,17 @@ jobs:
   
     - name: Install Raylib dependencies
       run: |
-        choco install sdl2 glfw freetype libsndfile -y  # Install Raylib dependencies using Chocolatey
+        choco upgrade chocolatey -y  # Ensure Chocolatey is up-to-date
+        choco install sdl2 --pre -y  # Install Raylib dependencies using Chocolatey
+        choco install glfw --pre -y
+        choco install freetype --pre -y
+        choco install libsndfile -y
+    
+    - name: Install SDL2 manually
+      run: |
+        Invoke-WebRequest -Uri "https://www.libsdl.org/release/SDL2-2.26.5-win64-x64.zip" -OutFile "SDL2.zip"
+        Expand-Archive -Path "SDL2.zip" -DestinationPath "C:\libsdl2"
+        echo "C:\libsdl2\bin" | setx PATH "%PATH%"
   
     - name: Wait for environment to refresh
       run: |
