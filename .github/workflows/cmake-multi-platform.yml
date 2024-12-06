@@ -155,7 +155,6 @@ jobs:
         dir build/Release
         cp build/Release/10SecondIntern.exe output/
         cp -r build/Release/assets output/
-        ls -alh output/
   
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
