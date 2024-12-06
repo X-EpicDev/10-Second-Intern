@@ -150,9 +150,11 @@ jobs:
     - name: Collect files
       shell: bash
       run: |
+        dir ${{ steps.strings.outputs.build-output-dir }}
         mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
         cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME.exe ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
         cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
+        dir ${{ steps.strings.outputs.build-output-dir }}/package
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
