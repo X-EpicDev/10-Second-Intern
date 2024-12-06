@@ -1,4 +1,4 @@
-name: CMake on multiple platforms
+name: Build Release Windows, Linux and MacOS
 
 permissions:
   contents: read
@@ -150,9 +150,6 @@ jobs:
     - name: Collect executable and assets
       run: |
         mkdir -p output
-        dir build
-        dir build/10SecondIntern.dir
-        dir build/Release
         cp build/Release/10SecondIntern.exe output/
         cp -r build/Release/assets output/
   
