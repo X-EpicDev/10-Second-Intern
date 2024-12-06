@@ -7,51 +7,74 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
+  build-linux:
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
         build_type: [Release]
-        c_compiler: [gcc, clang, cl]
-        include:
-          - os: windows-latest
-            c_compiler: cl
-            cpp_compiler: cl
-          - os: ubuntu-latest
-            c_compiler: gcc
-            cpp_compiler: g++
-          - os: ubuntu-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-          - os: macos-latest
-            c_compiler: clang
-            cpp_compiler: clang++
-        exclude:
-          - os: windows-latest
-            c_compiler: gcc
-          - os: windows-latest
-            c_compiler: clang
-          - os: ubuntu-latest
-            c_compiler: cl
-          - os: macos-latest
-            c_compiler: gcc
+        c_compiler: [gcc, clang]
+        cpp_compiler: [g++, clang++]
 
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies (Linux only)
-      if: runner.os == 'Linux'
+    - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
           libxrandr-dev libx11-dev libxext-dev libxrender-dev libxi-dev \
           libxinerama-dev libgl1-mesa-dev libglu1-mesa-dev libxcursor-dev
 
-    - name: Install dependencies (macOS only)
-      if: runner.os == 'macOS'
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Collect files
+      shell: bash
+      run: |
+        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
+        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
+        cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifact-linux-${{ matrix.build_type }}
+        path: ${{ steps.strings.outputs.build-output-dir }}/package
+
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --build-config ${{ matrix.build_type }}
+
+  build-macos:
+    runs-on: macos-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Release]
+        c_compiler: [clang]
+        cpp_compiler: [clang++]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
       run: |
         brew update
         brew install cmake
@@ -74,31 +97,70 @@ jobs:
     - name: Build
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Collect executable and assets
+    - name: Collect files
       shell: bash
       run: |
         mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
-        # For Linux or macOS, the executable may not have an extension
-        if [[ "$RUNNER_OS" == "Linux" || "$RUNNER_OS" == "macOS" ]]; then
-          EXECUTABLE_NAME=$(find ${{ steps.strings.outputs.build-output-dir }} -type f -executable -name "${{ github.event.repository.name }}" -print -quit)
-        else
-          EXECUTABLE_NAME="${{ steps.strings.outputs.build-output-dir }}\\${{ github.event.repository.name }}.exe"
-        fi
-
-        # Copy the executable and assets
-        if [[ -f "$EXECUTABLE_NAME" ]]; then
-          cp "$EXECUTABLE_NAME" ${{ steps.strings.outputs.build-output-dir }}/package/
-        else
-          echo "Executable not found!"
-        fi
+        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
         cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifact-${{ matrix.os }}-${{ matrix.build_type }}
+        name: build-artifact-macos-${{ matrix.build_type }}
         path: ${{ steps.strings.outputs.build-output-dir }}/package
 
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --build-config ${{ matrix.build_type }}
+
+  build-windows:
+    runs-on: windows-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Release]
+        c_compiler: [gcc, mingw]
+        cpp_compiler: [g++, mingw32-g++]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        choco install cmake
+        choco install mingw
+
+    - name: Set reusable strings
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -S ${{ github.workspace }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Collect files
+      shell: bash
+      run: |
+        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
+        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME.exe ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
+        cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifact-windows-${{ matrix.build_type }}
+        path: ${{ steps.strings.outputs.build-output-dir }}/package
 
     - name: Test
       working-directory: ${{ steps.strings.outputs.build-output-dir }}
