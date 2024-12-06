@@ -118,21 +118,25 @@ jobs:
       run: ctest --build-config ${{ matrix.build_type }}
 
   build-windows:
-    permissions:
-      contents: write       # for actions/upload-release-asset to upload release asset
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        build_type: [Release]
+        c_compiler: [gcc]
+        cpp_compiler: [g++]
+
     steps:
+    - uses: actions/checkout@v4
+
     - name: Set reusable strings
-      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
       id: strings
       shell: bash
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
-      # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
-      # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
         cmake -B ${{ steps.strings.outputs.build-output-dir }}
         -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
@@ -141,32 +145,21 @@ jobs:
         -S ${{ github.workspace }}
 
     - name: Build
-      # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
-    - name: Upload build files
+    - name: Collect files
+      shell: bash
+      run: |
+        mkdir -p ${{ steps.strings.outputs.build-output-dir }}/package
+        cp ${{ steps.strings.outputs.build-output-dir }}/$PROJECT_NAME.exe ${{ steps.strings.outputs.build-output-dir }}/package/ 2>/dev/null || true
+        cp -r ${{ github.workspace }}/assets ${{ steps.strings.outputs.build-output-dir }}/package/assets 2>/dev/null || true
+
+    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts-${{ matrix.os }}  # Unique name per OS
-        path: ${{ steps.strings.outputs.build-output-dir }}
+        name: build-artifact-windows-${{ matrix.build_type }}
+        path: ${{ steps.strings.outputs.build-output-dir }}/package
 
-    # - name: Collect executable and assets
-    #   run: |
-    #     mkdir -p output
-    #     cp ${{ env.PROJECT_BUILD_PATH }}\${{ env.PROJECT_NAME }}.exe output/
-    #     cp -r build/assets output/
-    #     ls -alh output/
-
-    # - name: Upload build artifacts
-    #   uses: actions/upload-artifact@v3
-    #   with:
-    #     name: build-artifacts
-    #     path: output/
-
-    # - name: Upload Artifact to Release
-    #   uses: softprops/action-gh-release@v1
-    #   with:
-    #     files: ${{ env.PROJECT_RELEASE_PATH }}.zip
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   if: github.event_name == 'release' && github.event.action == 'published'
+    - name: Test
+      working-directory: ${{ steps.strings.outputs.build-output-dir }}
+      run: ctest --build-config ${{ matrix.build_type }}
