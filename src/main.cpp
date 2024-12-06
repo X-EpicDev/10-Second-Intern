@@ -112,6 +112,7 @@ int main() {
         // Update
         bool found = false;
         Vector2 beforePos;
+        Vector2 newPos;
         switch (gameState) {
             case WAITING:
                 if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_SPACE)) {
@@ -142,20 +143,31 @@ int main() {
                 beforePos.x = player.getX();
                 beforePos.y = player.getY();
                 player.input(deltaTime, movementSpeed, wallPixels, &officeWalls);
+                newPos.x = player.getX();
+                newPos.y = player.getY();
+
+                player.setX(beforePos.x);
+                player.setY(beforePos.y);
 
                 for (auto& objectKey : objects) {
                     for (Object& object : objectKey.second) {
+                        player.setY(newPos.y);
                         if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
-                            player.setX(beforePos.x);
                             player.setY(beforePos.y);
                         }
+                        player.setX(newPos.x);
+                        if (CheckCollisionRecs(object.getHitbox(), player.getHitbox())) {
+                            player.setX(beforePos.x);
+                        }
+
                         if (CheckCollisionRecs(object.getHitbox(), player.getInteractionHitbox())) {
                             player.currentObject = &object;
                             found = true;
-                            break;
+                            goto OUTSIDE_OBJECTS;
                         }
                     }
                 }
+                OUTSIDE_OBJECTS:
 
                 if (!found) {
                     player.currentObject = nullptr;
