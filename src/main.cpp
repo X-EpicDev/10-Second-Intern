@@ -13,6 +13,10 @@
 #include "raymath.h"
 #include "Task.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 enum GameState {
     WAITING,
     PLAYING,
