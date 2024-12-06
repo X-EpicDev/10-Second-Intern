@@ -49,8 +49,9 @@ int main() {
 
     // Load textures
     Texture2D sheet = LoadTexture("../assets/sheet.png");
-    Texture2D officeWalls = LoadTexture("../assets/office_walls.png");
-    Texture2D officeFloor = LoadTexture("../assets/office_floor.png");
+    Texture2D overlayWall = LoadTexture("../assets/overlay_layer.png");
+    Texture2D officeWalls = LoadTexture("../assets/collision_layer.png");
+    Texture2D officeFloor = LoadTexture("../assets/floor_layer.png");
 
     // Text
     std::string startText = "Press SPACE or ENTER to begin";
@@ -64,16 +65,17 @@ int main() {
 
     // Objects
     Player player(sheet, {16.0001, 0, 15.9999, 15.9999}, {32, 32, 16, 16}, {0, 0, 8, 7}, Vector2{4, 9}, {0, 0, 10, 10}, {3, 0});
-    Object walls(officeWalls, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
-    Object floor(officeFloor, {0, 0, 448, 320}, {0, 0, 448, 320}, {0, 0, 0, 0}, Vector2{0, 0});
-    Image officeWallsImage = LoadImage("../assets/office_walls.png");
+    Object overlay(overlayWall, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
+    Object walls(officeWalls, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
+    Object floor(officeFloor, {0, 0, 432, 384}, {0, 0, 432, 384}, {0, 0, 0, 0}, Vector2{0, 0});
+    Image officeWallsImage = LoadImage("../assets/collision_layer.png");
     Color* wallPixels = LoadImageColors(officeWallsImage);
 
     std::vector<Object> printers = {
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{16, 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{64, 16, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{16, 48, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
-        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{64, 48, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 24, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{56, 24, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{8, 56, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
+        Printer{sheet, Rectangle{0, 0, 15.9999, 15.9999}, Rectangle{56, 56, 16, 16}, Rectangle{0, 0, 16, 16}, Vector2{0, 0}},
     };
     objects.emplace(PRINTER, printers);
 
@@ -191,6 +193,8 @@ int main() {
         }
 
         player.draw(debug);
+
+        overlay.draw(debug);
 
         if (player.currentObject != nullptr && currentTask->getNextObject() == player.currentObject) {
             DrawText("Press 'E' to interact", player.currentObject->getX() + 4, player.currentObject->getY() - 16, 1, WHITE);
