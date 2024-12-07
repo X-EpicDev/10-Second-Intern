@@ -54,7 +54,7 @@ jobs:
         cp -r build/assets output/
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-artifacts-linux
         path: output/
@@ -79,7 +79,7 @@ jobs:
     - name: Install dependencies
       run: |
         brew update
-        brew install cmake
+        brew install --formula cmake
         brew install glfw
 
     - name: Set reusable strings
@@ -107,7 +107,7 @@ jobs:
         ls -alh output/
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-artifacts-macos
         path: output/
@@ -153,7 +153,7 @@ jobs:
         cp -r build/Release/assets output/
   
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: build-artifacts-windows
         path: output/
