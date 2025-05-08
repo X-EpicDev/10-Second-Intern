@@ -1,4 +1,5 @@
 #include <cmath>
+#include <complex>
 #include <iomanip>
 #include <sstream>
 #include <string>
@@ -140,6 +141,9 @@ int main() {
     camera.rotation = 0.0f;
     camera.zoom = 4.0f;
 
+    float lastX = 0;
+    float lastY = 0;
+
     while (!WindowShouldClose()) {
         const float deltaTime = GetFrameTime();
 
@@ -226,7 +230,14 @@ int main() {
         }
 
         camera.offset = Vector2{GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
-        camera.target = Vector2{player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2};
+        if (abs(player.getX() - (camera.target.x - 20)) > 15) {
+            camera.target.x += player.getX() - lastX;
+        }
+        if (abs(player.getY() - (camera.target.y - 20)) > 15) {
+            camera.target.y += player.getY() - lastY;
+        }
+        lastX = player.getX();
+        lastY = player.getY();
 
         Vector2 mouse = GetMousePosition();
         Vector2 worldMouse = GetScreenToWorld2D(mouse, camera);
@@ -302,7 +313,6 @@ int main() {
                 break;
         }
 
-        // Debug
         if (debug) {
             DrawFPS(0, 32);
             DrawText(("Position: " + std::to_string(player.getX()) + "," + std::to_string(player.getY())).c_str(), 0, 48, 20, WHITE);
