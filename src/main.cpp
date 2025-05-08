@@ -57,6 +57,10 @@ int main() {
     std::string gameOverText = "Game Over";
     int gameOverTextWidth = MeasureText(gameOverText.c_str(), 40);
 
+    std::string cooldownText = "Waiting for next task...";
+    int cooldownWidth = MeasureText(cooldownText.c_str(), 40);
+
+
     // Tasks
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER}); // Do not list more than exists on the map or death happens
     tasks.emplace_back(std::list<Types>{Types::PRINTER, Types::PRINTER, Types::PRINTER});
@@ -293,10 +297,7 @@ int main() {
                 stream << std::fixed << std::setprecision(1) << std::round(timer * 10) / 10.0;
                 DrawText(("Time: " + stream.str()).c_str(), 0, 16, 20, WHITE);
                 if (currentTask == nullptr) {
-                    stream.str("");
-                    stream << std::fixed << std::setprecision(1) << std::round(cooldown * 10) / 10.0;
-                    text = "Cooldown: " + stream.str();
-                    DrawText(text.c_str(), GetScreenWidth() / 2 - MeasureText(text.c_str(), 40) / 2, GetScreenHeight() / 5 , 40, WHITE);
+                    DrawText(cooldownText.c_str(), GetScreenWidth() / 2 - cooldownWidth / 2, GetScreenHeight() / 5 , 40, WHITE);
                 }
                 break;
         }
