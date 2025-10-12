@@ -33,7 +33,9 @@ file(GLOB all_SRCS
         "${PROJECT_SOURCE_DIR}/src/*.h"
 )
 # Our Project
-add_executable(${PROJECT_NAME} ${all_SRCS})
+add_executable(${PROJECT_NAME} ${all_SRCS}
+        src/Game.cpp
+        src/Game.h)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
