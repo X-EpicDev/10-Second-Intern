@@ -236,7 +236,7 @@ void Game::start() {
 
         if(this->currentTask != nullptr) {
             Vector2 targetPosition = {this->currentTask->getNextObject()->getX() + (this->currentTask->getNextObject()->getWidth() / 2), this->currentTask->getNextObject()->getY() + (this->currentTask->getNextObject()->getHeight() / 2)};  // Target position
-            DrawLineEx({player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 4)}, targetPosition,5, RED);
+            DrawLineEx({player.getX() + (player.getWidth() / 2), player.getY() + (player.getHeight() / 4)}, targetPosition,5, { 230, 41, 55, 200 });
         }
 
         EndMode2D();
